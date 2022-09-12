@@ -8,14 +8,12 @@ contract AvaraNFT is ERC721, Ownable {
 
   mapping(uint256 => bool) public isActive;
   uint256 counter = 0;
-  constructor() ERC721 ("test", "TST") Ownable() {
+  constructor(string memory name, string memory symbol) ERC721 (name, symbol) Ownable() {
     
   }
 
-  function mint(uint256 amount) public {
-    for(uint256 i = 0; i < amount; i++) {
-      super._mint(msg.sender, ++counter);
-    } 
+  function mint(address to) public {
+    super._mint(to, ++counter);
   }
   
   function burn(uint256 tokenId) public {
