@@ -38,7 +38,7 @@ contract AvaraProtocol {
     if(bytes(_value).length == 0 ) revert ValueMustNotBeNull();
     if(!(avaraElegibility.isElegible(msg.sender))) revert NotElegible();
 
-    //if(ProposalType())
+    // Check conditions in IStorage before actually creating it
 
     DataTypes.Proposal storage newProposal = _proposals[++_counter];
     newProposal.value = _value;
