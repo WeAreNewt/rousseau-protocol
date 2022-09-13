@@ -8,6 +8,7 @@ contract AvaraNFT is ERC721, Ownable {
 
   mapping(uint256 => bool) public isActive;
   uint256 counter = 0;
+  uint256 public activeCount = 0;
   constructor(string memory name, string memory symbol) ERC721 (name, symbol) Ownable() {
     
   }
@@ -22,5 +23,6 @@ contract AvaraNFT is ERC721, Ownable {
 
   function setIsActive(uint256 tokenId, bool status) public onlyOwner {
     isActive[tokenId] = status;
+    status? counter++: counter--;
   }
 }
