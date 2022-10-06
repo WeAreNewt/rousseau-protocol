@@ -41,8 +41,8 @@ contract RousseauQuorum is IRousseauQuorum {
     return voteDelay;
   }
   
-  function getVoteWeight(address voter, uint256 proposalId) external view returns (uint256) {
-    if(IRousseauEligibility(eligibilityModuleAddress).isElegible(voter)) return 1;
+  function getVoteWeight(address voter, uint256 proposalId, bytes calldata data) external view returns (uint256) {
+    if(IRousseauEligibility(eligibilityModuleAddress).isElegible(voter, data)) return 1;
     revert NotElegible();
   }
 }

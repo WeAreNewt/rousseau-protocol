@@ -15,13 +15,13 @@ contract RousseauEligibility is IRousseauEligibility {
     nftCollection = IERC721(_nftCollection);
   }
 
-  function isElegible(address _address) external view returns (bool) {
+  function isElegible(address _address, bytes calldata data) external view returns (bool) {
     return nftCollection.balanceOf(_address) > 0;
   }
-  function hasVoted(address _address, uint256 _proposalId) external view returns(bool) {
+  function hasVoted(address _address, uint256 _proposalId, bytes calldata data) external view returns(bool) {
     return hasVotedOnProposal[_proposalId][_address];
   }
-  function setVoted(address _address, uint256 _proposalId) external { //Only RousseauProtocol
+  function setVoted(address _address, uint256 _proposalId, bytes calldata data) external { //Only RousseauProtocol
     hasVotedOnProposal[_proposalId][_address] = true;
   }
 }
