@@ -1,2 +1,0 @@
-@solmate/=lib/solmate/src/
-forge-std/=lib/forge-std/src/
