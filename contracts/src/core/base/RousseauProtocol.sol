@@ -35,9 +35,9 @@ contract RousseauProtocol {
     rousseauRepository = IRousseauRepository(_rousseauRepository);
   }
 
-  function createProposal(string calldata _value, uint8 _proposalType, uint256 _data) external {
+  function createProposal(string calldata _value, uint8 _proposalType, uint256 _data, bytes calldata _elegibilityData) external {
     if(bytes(_value).length == 0 ) revert ValueMustNotBeNull();
-    if(!(rousseauEligibility.isElegible(msg.sender))) revert NotElegible();
+    if(!(rousseauEligibility.isElegible(msg.sender, _elegibilityData))) revert NotElegible();
 
     // Check conditions in IRepository before actually creating it
 
@@ -62,9 +62,9 @@ contract RousseauProtocol {
     }
   }
 
-  function voteProposal(uint256 _proposalId, uint8 _voteType) external {
-    if(!rousseauEligibility.isElegible(msg.sender)) revert NotElegible();
-    if(rousseauEligibility.hasVoted(msg.sender, _proposalId)) revert AlreadyVoted();
+  function voteProposal(uint256 _proposalId, uint8 _voteType, bytes calldata _data) external {
+    if(!rousseauEligibility.isElegible(msg.sender, _data)) revert NotElegible();
+    if(rousseauEligibility.hasVoted(msg.sender, _proposalId, _data)) revert AlreadyVoted();
 
     DataTypes.Proposal storage proposal = _proposals[_proposalId];
 
@@ -73,6 +73,6 @@ contract RousseauProtocol {
 
     // creation of custom vote counter
     proposal.votes[DataTypes.VoteType(_voteType)]++;
-    rousseauEligibility.setVoted(msg.sender, _proposalId);
+    rousseauEligibility.setVoted(msg.sender, _proposalId, _data);
   }
 }
