@@ -22,6 +22,7 @@ contract RousseauProtocol {
   error VoteAlreadyFinished();
   
   mapping(uint256 => DataTypes.Proposal) private _proposals;
+  mapping(uint256 => mapping(address => string)) _voteComments;
 
   uint256 _counter = 0;
 
@@ -62,7 +63,7 @@ contract RousseauProtocol {
     }
   }
 
-  function voteProposal(uint256 _proposalId, uint8 _voteType, bytes calldata _data) external {
+  function voteProposal(uint256 _proposalId, uint8 _voteType, string calldata _comment, bytes calldata _data) external {
     if(!rousseauEligibility.isElegible(msg.sender, _data)) revert NotElegible();
     if(rousseauEligibility.hasVoted(msg.sender, _proposalId, _data)) revert AlreadyVoted();
 
@@ -73,6 +74,8 @@ contract RousseauProtocol {
 
     // creation of custom vote counter
     proposal.votes[DataTypes.VoteType(_voteType)]++;
+    _voteComments[_proposalId][msg.sender] = _comment;
+
     rousseauEligibility.setVoted(msg.sender, _proposalId, _data);
   }
 }
