@@ -25,14 +25,19 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
+        working-directory: ./contracts
+
 
       - name: Run Forge build
         run: |
           forge --version
           forge build --sizes
         id: build
+        working-directory: ./contracts
 
       - name: Run Forge tests
         run: |
           forge test -vvvvv
         id: test
+        working-directory: ./contracts
+
