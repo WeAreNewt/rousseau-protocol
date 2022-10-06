@@ -32,7 +32,7 @@ contract AvaraQuorum is IAvaraQuorum {
   }
 
   function hasQuorum(uint256 yes, uint256 no, uint256 abstain) external view returns(bool) {
-    IERC721(nftCollectionAddress).co
+    //IERC721(nftCollectionAddress).co
   }
   function getVotePeriod() external view returns (uint256) {
     return votePeriod;

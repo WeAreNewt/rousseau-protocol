@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: true
 
-    name: Foundry project
+    name: Rousseau protocol
     runs-on: ubuntu-latest
     defaults:
       run:
