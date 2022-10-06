@@ -30,7 +30,7 @@ contract RousseauProtocol {
   IRousseauRepository rousseauRepository;
   
   constructor(address _rousseauEligibility, address _rousseauQuorum, address _rousseauRepository) {
-    rousseauEligibility = IRousseauEligibility(_rousseauEligibilityElegibility);
+    rousseauEligibility = IRousseauEligibility(_rousseauEligibility);
     rousseauQuorum = IRousseauQuorum(_rousseauQuorum);
     rousseauRepository = IRousseauRepository(_rousseauRepository);
   }
