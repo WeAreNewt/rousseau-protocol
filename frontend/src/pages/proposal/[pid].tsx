@@ -10,7 +10,7 @@ const Proposal: NextComponentType = () => {
   return (
     <div className="flex flex-col items-center relative p-0">
       <Header />
-      <ProposalInfo id={Number(pid)} />
+      <ProposalInfo />
     </div>
   )
 }
