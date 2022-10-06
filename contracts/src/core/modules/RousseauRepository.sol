@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity ^0.8.13;
 
-import "../../interfaces/IAvaraStorage.sol";
+import "../../interfaces/IRousseauRepository.sol";
 import "../../libraries/DataTypes.sol";
 
 
-contract AvaraStorage is IAvaraStorage {
+contract RousseauRepository is IRousseauRepository {
   function addValue(string calldata value) external { // Only AvaraProtocol
 
   }

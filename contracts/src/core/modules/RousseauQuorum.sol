@@ -2,12 +2,12 @@
 pragma solidity ^0.8.13;
 
 
-import "../../interfaces/IAvaraElegibility.sol";
-import "../../interfaces/IAvaraQuorum.sol";
+import "../../interfaces/IRousseauEligibility.sol";
+import "../../interfaces/IRousseauQuorum.sol";
 import "../../libraries/DataTypes.sol";
 import "@openzeppelin/token/ERC721/IERC721.sol";
 
-contract AvaraQuorum is IAvaraQuorum {
+contract RousseauQuorum is IRousseauQuorum {
 
   error NotElegible();
 

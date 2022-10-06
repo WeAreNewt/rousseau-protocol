@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity ^0.8.13;
 
-import "../../interfaces/IAvaraElegibility.sol";
+import "../../interfaces/IRousseauEligibility.sol";
 import "../../libraries/DataTypes.sol";
 import "@openzeppelin/token/ERC721/IERC721.sol";
 
-contract AvaraStorage is IAvaraElegibility {
+contract RousseauEligibility is IAvaraElegibility {
 
   mapping(uint256 => mapping(address => bool)) hasVotedOnProposal;
 
