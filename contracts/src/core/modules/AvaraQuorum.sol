@@ -15,16 +15,24 @@ contract AvaraQuorum is IAvaraQuorum {
   uint256 private voteDelay;
   address private nftCollectionAddress;
   address private elegibilityModuleAddress;
+  uint256 private quorumPercentage;
 
-  constructor(uint256 _votePeriod, uint256 _voteDelay, address _nftCollectionAddress, address _elegibilityModuleAddress) {
+  constructor(
+    uint256 _votePeriod,
+    uint256 _voteDelay,
+    address _nftCollectionAddress,
+    address _elegibilityModuleAddress,
+    uint256 _quorumPercentage
+  ) {
     votePeriod = _votePeriod;
     voteDelay = _voteDelay;
     nftCollectionAddress = _nftCollectionAddress;
     elegibilityModuleAddress = _elegibilityModuleAddress;
+    quorumPercentage = _quorumPercentage;
   }
 
   function hasQuorum(uint256 yes, uint256 no, uint256 abstain) external view returns(bool) {
-    return true;
+    IERC721(nftCollectionAddress).co
   }
   function getVotePeriod() external view returns (uint256) {
     return votePeriod;
