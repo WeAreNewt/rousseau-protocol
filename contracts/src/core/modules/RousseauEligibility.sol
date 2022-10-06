@@ -5,7 +5,7 @@ import "../../interfaces/IRousseauEligibility.sol";
 import "../../libraries/DataTypes.sol";
 import "@openzeppelin/token/ERC721/IERC721.sol";
 
-contract RousseauEligibility is IAvaraElegibility {
+contract RousseauEligibility is IRousseauEligibility {
 
   mapping(uint256 => mapping(address => bool)) hasVotedOnProposal;
 
