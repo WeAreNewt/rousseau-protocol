@@ -16,6 +16,9 @@ jobs:
 
     name: Foundry project
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./contracts
     steps:
       - uses: actions/checkout@v3
         with:
@@ -25,7 +28,6 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-        working-directory: ./contracts
 
 
       - name: Run Forge build
@@ -33,11 +35,8 @@ jobs:
           forge --version
           forge build --sizes
         id: build
-        working-directory: ./contracts
 
       - name: Run Forge tests
         run: |
           forge test -vvvvv
         id: test
-        working-directory: ./contracts
-
