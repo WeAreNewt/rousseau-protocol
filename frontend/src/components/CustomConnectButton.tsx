@@ -1,7 +1,6 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
-import { NextComponentType } from 'next'
 
-const CustomConnectButton: NextComponentType = () => {
+const CustomConnectButton: React.FC = () => {
   return (
     <ConnectButton.Custom>
       {({
