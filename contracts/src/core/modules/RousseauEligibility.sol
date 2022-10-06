@@ -21,7 +21,7 @@ contract RousseauEligibility is IRousseauEligibility {
   function hasVoted(address _address, uint256 _proposalId) external view returns(bool) {
     return hasVotedOnProposal[_proposalId][_address];
   }
-  function setVoted(address _address, uint256 _proposalId) external { //Only AvaraProtocol
+  function setVoted(address _address, uint256 _proposalId) external { //Only RousseauProtocol
     hasVotedOnProposal[_proposalId][_address] = true;
   }
 }
