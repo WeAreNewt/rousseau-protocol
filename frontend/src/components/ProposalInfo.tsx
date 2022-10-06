@@ -5,9 +5,9 @@ interface ProposalProps {
   id: string
 }
 
-const ProposalInfo: NextComponentType = ({ id }: any) => {
+const ProposalInfo: NextComponentType = ({ id }: Number) => {
   const { proposal } = useProposalData()
-
+  
   return (
     <div className="flex flex-col items-start w-full ml-2/3">
       <div>
