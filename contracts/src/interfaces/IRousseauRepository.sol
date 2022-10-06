@@ -7,4 +7,5 @@ interface IRousseauRepository {
   function replaceValue(uint256 index, string calldata value) external;
   function canRemove(uint256 index) external returns(bool);
   function canReplace(uint256 index) external returns(bool);
+  function addComment(uint256 proposalId, string calldata comment) external;
 }

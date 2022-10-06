@@ -1,8 +1,7 @@
-import { NextComponentType } from 'next'
 import CustomConnectButton from './CustomConnectButton'
 import Router from 'next/router'
 
-const Header: NextComponentType = () => {
+const Header: React.FC = () => {
   return (
     <nav className="flex flex-row items-center justify-between grow-0 py-5 px-12 gap-5 w-full">
       <svg

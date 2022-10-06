@@ -1,8 +1,7 @@
-import { NextComponentType } from 'next'
 import { useValueData } from '../hooks'
 import Router from 'next/router'
 
-const ValueTable: NextComponentType = () => {
+const ValueTable: React.FC = () => {
   const { values } = useValueData()
 
   return (

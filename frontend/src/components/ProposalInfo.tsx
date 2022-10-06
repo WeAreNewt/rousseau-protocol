@@ -1,13 +1,12 @@
-import { NextComponentType } from 'next'
 import { useProposalData } from '../hooks'
 
 interface ProposalProps {
   id: string
 }
 
-const ProposalInfo: NextComponentType = ({ id }: any) => {
+const ProposalInfo: React.FC<ProposalProps> = ({ id }) => {
   const { proposal } = useProposalData()
-
+  return(<h1> {id} </h1>);
   return (
     <div className="flex flex-col items-start w-full ml-2/3">
       <div>

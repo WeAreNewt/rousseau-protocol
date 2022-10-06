@@ -15,7 +15,7 @@ const { chains, provider } = configureChains(
 )
 
 const { connectors } = getDefaultWallets({
-  appName: 'Avara Protocol',
+  appName: 'Rousseau Protocol',
   chains,
 })
 
@@ -30,7 +30,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <Head>
-          <title>Avara Protocol</title>
+          <title>Rousseau Protocol</title>
         </Head>
         <Component {...pageProps} />
       </RainbowKitProvider>
