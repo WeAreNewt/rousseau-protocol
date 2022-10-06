@@ -29,4 +29,8 @@ contract RousseauRepository is IRousseauRepository {
   function canReplace(uint256 index) external returns(bool) {
     return true;
   }
+
+  function addComment(uint256 proposalId, string calldata comment) external {
+
+  }
 }

@@ -22,7 +22,6 @@ contract RousseauProtocol {
   error VoteAlreadyFinished();
   
   mapping(uint256 => DataTypes.Proposal) private _proposals;
-  mapping(uint256 => mapping(address => string)) _voteComments;
 
   uint256 _counter = 0;
 
@@ -74,8 +73,7 @@ contract RousseauProtocol {
 
     // creation of custom vote counter
     proposal.votes[DataTypes.VoteType(_voteType)]++;
-    _voteComments[_proposalId][msg.sender] = _comment;
-
+    rousseauRepository.addComment(_proposalId, _comment);
     rousseauEligibility.setVoted(msg.sender, _proposalId, _data);
   }
 }
