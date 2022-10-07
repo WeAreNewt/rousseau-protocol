@@ -5,8 +5,8 @@ interface ProposalProps {
 }
 
 const ProposalInfo: React.FC<ProposalProps> = ({ id }) => {
-  const { proposal } = useProposalData()
-  return(<h1> {id} </h1>);
+  const { proposal } = useProposalData();
+  
   return (
     <div className="flex flex-col items-start w-full ml-2/3">
       <div>
