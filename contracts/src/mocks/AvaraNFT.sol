@@ -3,7 +3,6 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/token/ERC721/ERC721.sol";
 import "@openzeppelin/access/Ownable.sol";
-import "./IAvaraNFT.sol";
 
 contract AvaraNFT is ERC721, Ownable, IAvaraNFT {
 
