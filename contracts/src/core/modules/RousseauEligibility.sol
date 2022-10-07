@@ -24,4 +24,9 @@ contract RousseauEligibility is IRousseauEligibility {
   function setVoted(address _address, uint256 _proposalId, bytes calldata data) external { //Only RousseauProtocol
     hasVotedOnProposal[_proposalId][_address] = true;
   }
+
+  function getVoteWeight(address _address, uint256 proposalId, bytes calldata data) external view returns (uint256) {
+    if(nftCollection.balanceOf(_address) > 0) return 1;
+    revert();
+  }
 }
