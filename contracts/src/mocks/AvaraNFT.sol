@@ -3,15 +3,14 @@ pragma solidity ^0.8.13;
 
 import "@openzeppelin/token/ERC721/ERC721.sol";
 import "@openzeppelin/access/Ownable.sol";
+import "./IAvaraNFT.sol";
 
-contract AvaraNFT is ERC721, Ownable {
+contract AvaraNFT is ERC721, Ownable, IAvaraNFT {
 
   mapping(uint256 => bool) public isActive;
   uint256 counter = 0;
   uint256 public activeCount = 0;
-  constructor(string memory name, string memory symbol) ERC721 (name, symbol) Ownable() {
-    
-  }
+  constructor(string memory name, string memory symbol) ERC721 (name, symbol) Ownable() {}
 
   function mint(address to) public {
     super._mint(to, ++counter);

@@ -5,6 +5,7 @@ pragma solidity ^0.8.13;
 import "../../interfaces/IRousseauEligibility.sol";
 import "../../interfaces/IRousseauQuorum.sol";
 import "../../libraries/DataTypes.sol";
+import "../../mocks/AvaraNFT.sol";
 import "@openzeppelin/token/ERC721/IERC721.sol";
 
 contract RousseauQuorum is IRousseauQuorum {
@@ -13,7 +14,7 @@ contract RousseauQuorum is IRousseauQuorum {
 
   uint256 private votePeriod;
   uint256 private voteDelay;
-  address private nftCollectionAddress;
+  AvaraNFT private nftCollection;
   address private eligibilityModuleAddress;
   uint256 private quorumPercentage;
 
@@ -26,23 +27,20 @@ contract RousseauQuorum is IRousseauQuorum {
   ) {
     votePeriod = _votePeriod;
     voteDelay = _voteDelay;
-    nftCollectionAddress = _nftCollectionAddress;
+    nftCollection = AvaraNFT(_nftCollectionAddress);
     eligibilityModuleAddress = _eligibilityModuleAddress;
     quorumPercentage = _quorumPercentage;
   }
 
   function hasQuorum(uint256 yes, uint256 no, uint256 abstain) external view returns(bool) {
-    //IERC721(nftCollectionAddress).co
+    return nftCollection.activeCount() > 0 && (yes + no + abstain) * 100 / nftCollection.activeCount() >= quorumPercentage && yes > no;
   }
+
   function getVotePeriod() external view returns (uint256) {
     return votePeriod;
   }
+  
   function getVoteDelay() external view returns (uint256) {
     return voteDelay;
-  }
-  
-  function getVoteWeight(address voter, uint256 proposalId, bytes calldata data) external view returns (uint256) {
-    if(IRousseauEligibility(eligibilityModuleAddress).isElegible(voter, data)) return 1;
-    revert NotElegible();
   }
 }
