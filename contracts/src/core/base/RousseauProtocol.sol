@@ -39,7 +39,7 @@ contract RousseauProtocol {
     if(bytes(_value).length == 0 ) revert ValueMustNotBeNull();
     if(!(rousseauEligibility.isElegible(msg.sender, _elegibilityData))) revert NotElegible();
 
-    // Check conditions in IRepository before actually creating it
+    //TODO: Check conditions in IRepository before actually creating it
 
     DataTypes.Proposal storage newProposal = _proposals[++_counter];
     newProposal.value = _value;
@@ -71,7 +71,7 @@ contract RousseauProtocol {
     if(block.timestamp < proposal.start + rousseauQuorum.getVoteDelay()) revert VoteNotStarted();
     if(block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()) revert VoteAlreadyFinished();
 
-    // creation of custom vote counter
+    //TODO: creation of custom vote counter
     proposal.votes[DataTypes.VoteType(_voteType)]++;
     rousseauRepository.addComment(_proposalId, _comment);
     rousseauEligibility.setVoted(msg.sender, _proposalId, _data);
