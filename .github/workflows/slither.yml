@@ -8,19 +8,27 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    defaults:
+    run:
+      working-directory: ./contracts
     steps:
       - uses: actions/checkout@v3
+        with:
+        submodules: recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-
-
       - name: Run Forge build
         run: |
           forge --version
           forge build --sizes
         id: build
+
+      - name: Run Forge tests
+        run: |
+          forge test -vvvvv
+        id: test
       - uses: crytic/slither-action@v0.2.0
         with:
           ignore-compile: true
