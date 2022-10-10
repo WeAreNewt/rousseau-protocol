@@ -71,8 +71,7 @@ contract RousseauProtocol {
     if(block.timestamp < proposal.start + rousseauQuorum.getVoteDelay()) revert VoteNotStarted();
     if(block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()) revert VoteAlreadyFinished();
 
-    //TODO: creation of custom vote counter
-    proposal.votes[DataTypes.VoteType(_voteType)]++;
+    proposal.votes[DataTypes.VoteType(_voteType)] += rousseauEligibility.getVoteWeight(msg.sender, _proposalId, _data);
     rousseauRepository.addComment(_proposalId, _comment);
     rousseauEligibility.setVoted(msg.sender, _proposalId, _data);
   }
