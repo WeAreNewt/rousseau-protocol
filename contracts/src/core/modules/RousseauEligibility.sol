@@ -8,7 +8,7 @@ import "@openzeppelin/token/ERC721/IERC721.sol";
 
 contract RousseauEligibility is IRousseauEligibility {
 
-  mapping(uint256 => mapping(uint256 => bool)) hasVotedOnProposal;
+  mapping(uint256 => mapping(uint256 => bool)) public hasVotedOnProposal;
 
   AvaraNFT nftCollection;
 
