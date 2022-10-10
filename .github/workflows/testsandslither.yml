@@ -1,4 +1,4 @@
-name: Slither Analysis
+name: Run foundry tests and slyther analysis
 on:
   push:
     branches: [master]
@@ -12,6 +12,9 @@ defaults:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -32,5 +35,11 @@ jobs:
         id: test
       - uses: crytic/slither-action@v0.2.0
         with:
+          sarif: results.sarif
+          fail-on: none
           ignore-compile: true
           target: contracts/
+      - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v2
+      with:
+        sarif_file: ${{ steps.slither.outputs.sarif }}
