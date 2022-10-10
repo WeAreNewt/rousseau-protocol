@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: 'Go to contracts folder'
-        run: cd contracts
       - uses: crytic/slither-action@v0.2.0
         with:
           ignore-compile: true
+          target: contracts/
