@@ -10,4 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: crytic/slither-action@v0.2.0
-        target: contracts/src
+        with:
+          target: 'contracts/src'
