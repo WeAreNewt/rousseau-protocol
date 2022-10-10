@@ -9,12 +9,13 @@ defaults:
   run:
     working-directory: ./contracts
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
     steps:
       - uses: actions/checkout@v3
         with:
