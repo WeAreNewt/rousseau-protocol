@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity ^0.8.13;
 
-import "@openzeppelin/token/ERC721/ERC721.sol";
+import "@openzeppelin/token/ERC721/Extensions/ERC721Enumerable.sol";
 import "@openzeppelin/access/Ownable.sol";
 
-contract AvaraNFT is ERC721, Ownable {
+contract AvaraNFT is ERC721Enumerable, Ownable {
 
   mapping(uint256 => bool) public isActive;
   uint256 counter = 0;

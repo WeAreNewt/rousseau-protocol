@@ -24,20 +24,36 @@ contract RousseauEligibilityTests is Test {
         assertEq(nft.isActive(1), false);
     }
 
-    function testIsElegibleIfActiveNFTHolder() public {
-        bool res = eligibility.isElegible(users[0], abi.encode(0));
+    function testCanVoteIfActiveNFTHolderNotVoted() public {
+        bool res = eligibility.canVote(users[0], 0, abi.encode(0));
         assertTrue(res);
     }
 
-    function testIsElegibleIfInactiveNFTHolder() public {
-        bool res = eligibility.isElegible(users[1], abi.encode(1));
+    function testCanVoteIfInactiveNFTHolderNotVoted() public {
+        bool res = eligibility.canVote(users[1], 0, abi.encode(1));
         assertFalse(res);
     }
     
-    function testIsElegibleIfNotNFTHolder() public {
-        bool res = eligibility.isElegible(users[2], abi.encode(0));
+    function testCanVoteIfNotNFTHolder() public {
+        bool res = eligibility.canVote(users[2], 0, abi.encode(0));
         assertFalse(res);
     }
+
+    function testCanProposeIfActiveNFTHolderNotVoted() public {
+        bool res = eligibility.canPropose(users[0], abi.encode(0));
+        assertTrue(res);
+    }
+
+    function testCanProposeIfInactiveNFTHolderNotVoted() public {
+        bool res = eligibility.canPropose(users[1], abi.encode(1));
+        assertFalse(res);
+    }
+    
+    function testCanProposeIfNotNFTHolder() public {
+        bool res = eligibility.canPropose(users[2], abi.encode(0));
+        assertFalse(res);
+    }
+
 
     function testSetVoted() public {
         eligibility.setVoted(users[0], 0, abi.encode(0));
