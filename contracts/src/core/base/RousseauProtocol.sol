@@ -16,7 +16,6 @@ contract RousseauProtocol {
   error ValueMustNotBeNull();
   error NotElegible();
   error NoQuorum();
-  error AlreadyVoted();
   error VoteNotStarted();
   error VoteStillGoing();
   error VoteAlreadyFinished();
@@ -38,7 +37,7 @@ contract RousseauProtocol {
 
   function createProposal(string calldata _value, uint8 _proposalType, uint256 _data, bytes calldata _elegibilityData) external {
     if(bytes(_value).length == 0 ) revert ValueMustNotBeNull();
-    if(!(rousseauEligibility.isElegible(msg.sender, _elegibilityData))) revert NotElegible();
+    if(!(rousseauEligibility.canPropose(msg.sender, _elegibilityData))) revert NotElegible();
     if(_proposalType != 0 && (rousseauRepository.canRemove(_data) || rousseauRepository.canReplace(_data))) revert RepositoryError();
 
     DataTypes.Proposal storage newProposal = _proposals[++_counter];
@@ -63,8 +62,7 @@ contract RousseauProtocol {
   }
 
   function voteProposal(uint256 _proposalId, uint8 _voteType, string calldata _comment, bytes calldata _data) external {
-    if(!rousseauEligibility.isElegible(msg.sender, _data)) revert NotElegible();
-    if(rousseauEligibility.hasVoted(msg.sender, _proposalId, _data)) revert AlreadyVoted();
+    if(!rousseauEligibility.canVote(msg.sender, _proposalId, _data)) revert NotElegible();
 
     DataTypes.Proposal storage proposal = _proposals[_proposalId];
 

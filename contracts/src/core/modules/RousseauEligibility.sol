@@ -16,10 +16,20 @@ contract RousseauEligibility is IRousseauEligibility {
     nftCollection = AvaraNFT(_nftCollection);
   }
 
-  function isElegible(address _address, bytes calldata data) external view returns (bool) {
-    uint256 tokenId = abi.decode(data, (uint256));
-    return nftCollection.ownerOf(tokenId) == _address && nftCollection.isActive(tokenId);
+  function canPropose(address _address, bytes calldata data) external view returns (bool) {
+    for(uint256 i = 0; i < nftCollection.balanceOf(_address); i++) {
+      if(nftCollection.isActive(nftCollection.tokenOfOwnerByIndex(_address, i))) {
+        return true;
+      }
+    }
+    return false;
   }
+
+  function canVote(address _address, uint256 _proposalId, bytes calldata data) external view returns (bool) {
+    uint256 tokenId = abi.decode(data, (uint256));
+    return nftCollection.ownerOf(tokenId) == _address && nftCollection.isActive(tokenId) && !hasVotedOnProposal[_proposalId][tokenId];
+  }
+
   function hasVoted(address _address, uint256 _proposalId, bytes calldata data) external view returns(bool) {
     uint256 tokenId = abi.decode(data, (uint256));
     return hasVotedOnProposal[_proposalId][tokenId];
