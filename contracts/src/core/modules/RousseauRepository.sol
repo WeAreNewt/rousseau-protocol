@@ -7,8 +7,8 @@ import "../../libraries/DataTypes.sol";
 
 contract RousseauRepository is IRousseauRepository {
   
-
   
+
   function addValue(string calldata value) external { //TODO: Only RousseauProtocol
 
   }
