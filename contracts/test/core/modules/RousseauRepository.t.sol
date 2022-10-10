@@ -5,9 +5,11 @@ import "forge-std/Test.sol";
 
 //TODO: Kickstart
 contract RousseauRepositoryTests is Test {
+/*
     function setUp() public {}
 
     function testExample() public {
         assertTrue(true);
     }
+*/
 }

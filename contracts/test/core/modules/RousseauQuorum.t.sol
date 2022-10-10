@@ -11,7 +11,7 @@ contract RousseauQuorumTests is Test {
     AvaraNFT nft;
     function setUp() public {
         nft = new AvaraNFT('AVARA NFT', 'AVR');
-        quorum = new RousseauQuorum(100, 101, address(nft), address(0), 50);
+        quorum = new RousseauQuorum(100, 101, address(nft), 50);
     }
 
     function testGetVotePeriod() public {

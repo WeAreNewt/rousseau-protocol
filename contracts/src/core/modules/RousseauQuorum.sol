@@ -4,7 +4,6 @@ pragma solidity ^0.8.13;
 import "../../interfaces/IRousseauQuorum.sol";
 import "../../libraries/DataTypes.sol";
 import "../../mocks/AvaraNFT.sol";
-import "@openzeppelin/token/ERC721/IERC721.sol";
 
 contract RousseauQuorum is IRousseauQuorum {
 
@@ -13,20 +12,17 @@ contract RousseauQuorum is IRousseauQuorum {
   uint256 private votePeriod;
   uint256 private voteDelay;
   AvaraNFT private nftCollection;
-  address private eligibilityModuleAddress;
   uint256 private quorumPercentage;
 
   constructor(
     uint256 _votePeriod,
     uint256 _voteDelay,
     address _nftCollectionAddress,
-    address _eligibilityModuleAddress,
     uint256 _quorumPercentage
   ) {
     votePeriod = _votePeriod;
     voteDelay = _voteDelay;
     nftCollection = AvaraNFT(_nftCollectionAddress);
-    eligibilityModuleAddress = _eligibilityModuleAddress;
     quorumPercentage = _quorumPercentage;
   }
 
