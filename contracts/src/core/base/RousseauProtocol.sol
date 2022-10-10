@@ -20,7 +20,8 @@ contract RousseauProtocol {
   error VoteNotStarted();
   error VoteStillGoing();
   error VoteAlreadyFinished();
-  
+  error RepositoryError();
+
   mapping(uint256 => DataTypes.Proposal) private _proposals;
 
   uint256 _counter = 0;
@@ -38,8 +39,7 @@ contract RousseauProtocol {
   function createProposal(string calldata _value, uint8 _proposalType, uint256 _data, bytes calldata _elegibilityData) external {
     if(bytes(_value).length == 0 ) revert ValueMustNotBeNull();
     if(!(rousseauEligibility.isElegible(msg.sender, _elegibilityData))) revert NotElegible();
-
-    //TODO: Check conditions in IRepository before actually creating it
+    if(_proposalType != 0 && (rousseauRepository.canRemove(_data) || rousseauRepository.canReplace(_data))) revert RepositoryError();
 
     DataTypes.Proposal storage newProposal = _proposals[++_counter];
     newProposal.value = _value;
