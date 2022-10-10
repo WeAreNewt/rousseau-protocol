@@ -138,6 +138,41 @@ contract RousseauProtocolTests is Test {
 
     function testExecuteWithVoteStillGoing() public {
         setupTestProposal();
+        fillQuorum();
+        vm.expectRevert(abi.encodeWithSignature('VoteStillGoing()'));
+        protocol.executeProposal(0);
+    }
+
+    function testExecuteAddProposal() public {
+        vm.prank(users[0]);
+        protocol.createProposal('test', 0, 1, abi.encode(''));
+        fillQuorum();
+        vm.warp(block.timestamp + quorum.getVotePeriod() + 1);
+        protocol.executeProposal(0);
+    }
+
+    function testExecutionRemoveProposal() public {
+        vm.prank(users[0]);
+        protocol.createProposal('test', 1, 1, abi.encode(''));
+        fillQuorum();
+        vm.warp(block.timestamp + quorum.getVotePeriod() + 1);
+        protocol.executeProposal(0);
+    }
+
+    function testExecutionReplaceProposal() public {
+        vm.prank(users[0]);
+        protocol.createProposal('test', 2, 1, abi.encode(''));
+        fillQuorum();
+        vm.warp(block.timestamp + quorum.getVotePeriod() + 1);
+        protocol.executeProposal(0);
+    }
+
+    function setupTestProposal() internal {
+        vm.prank(users[0]);
+        protocol.createProposal('test', 1, 1, abi.encode(''));
+    }
+
+    function fillQuorum() internal {
         vm.warp(block.timestamp + quorum.getVoteDelay() + 1);
         vm.prank(users[0]);
         protocol.voteProposal(0, 0, 'This is a comment', abi.encode(0));
@@ -145,12 +180,5 @@ contract RousseauProtocolTests is Test {
         protocol.voteProposal(0, 0, 'This is a comment', abi.encode(1));
         vm.prank(users[2]);
         protocol.voteProposal(0, 0, 'This is a comment', abi.encode(2));
-        vm.expectRevert(abi.encodeWithSignature('VoteStillGoing()'));
-        protocol.executeProposal(0);
-    }
-
-    function setupTestProposal() internal {
-        vm.prank(users[0]);
-        protocol.createProposal('test', 1, 1, abi.encode(''));
     }
 }
