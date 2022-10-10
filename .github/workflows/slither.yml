@@ -10,6 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+
+      - name: Run Forge build
+        run: |
+          forge --version
+          forge build --sizes
+        id: build
       - uses: crytic/slither-action@v0.2.0
         with:
           ignore-compile: true
