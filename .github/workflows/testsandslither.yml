@@ -1,4 +1,4 @@
-name: Run foundry tests and slyther analysis
+name: Run tests & analysis
 on:
   push:
     branches: [master]
@@ -8,10 +8,6 @@ on:
 defaults:
   run:
     working-directory: ./contracts
-
-permissions:
-  contents: read
-  security-events: write
 
 jobs:
   analyze:
