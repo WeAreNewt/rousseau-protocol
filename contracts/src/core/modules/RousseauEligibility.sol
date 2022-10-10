@@ -2,31 +2,35 @@
 pragma solidity ^0.8.13;
 
 import "../../interfaces/IRousseauEligibility.sol";
+import "../../../src/mocks/AvaraNFT.sol";
 import "../../libraries/DataTypes.sol";
 import "@openzeppelin/token/ERC721/IERC721.sol";
 
 contract RousseauEligibility is IRousseauEligibility {
 
-  mapping(uint256 => mapping(address => bool)) hasVotedOnProposal;
+  mapping(uint256 => mapping(uint256 => bool)) hasVotedOnProposal;
 
-  IERC721 nftCollection;
+  AvaraNFT nftCollection;
 
   constructor(address _nftCollection) {
-    nftCollection = IERC721(_nftCollection);
+    nftCollection = AvaraNFT(_nftCollection);
   }
 
   function isElegible(address _address, bytes calldata data) external view returns (bool) {
-    return nftCollection.balanceOf(_address) > 0;
+    uint256 tokenId = abi.decode(data, (uint256));
+    return nftCollection.ownerOf(tokenId) == _address && nftCollection.isActive(tokenId);
   }
   function hasVoted(address _address, uint256 _proposalId, bytes calldata data) external view returns(bool) {
-    return hasVotedOnProposal[_proposalId][_address];
+    uint256 tokenId = abi.decode(data, (uint256));
+    return hasVotedOnProposal[_proposalId][tokenId];
   }
   function setVoted(address _address, uint256 _proposalId, bytes calldata data) external { //TODO: Only RousseauProtocol
-    hasVotedOnProposal[_proposalId][_address] = true;
+    uint256 tokenId = abi.decode(data, (uint256));
+    hasVotedOnProposal[_proposalId][tokenId] = true;
   }
 
-  function getVoteWeight(address _address, uint256 proposalId, bytes calldata data) external view returns (uint256) { // TODO: Discuss ovte weight in our specific usecase
-    if(nftCollection.balanceOf(_address) > 0) return 1;
-    revert();
+  function getVoteWeight(address _address, uint256 _proposalId, bytes calldata data) external view returns (uint256) { // TODO: Discuss ovte weight in our specific usecase
+    uint256 tokenId = abi.decode(data, (uint256));
+    return hasVotedOnProposal[_proposalId][tokenId] ? 0 : 1;
   }
 }

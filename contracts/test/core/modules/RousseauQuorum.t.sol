@@ -3,7 +3,6 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 import "../../../src/core/modules/RousseauQuorum.sol";
-import "../../../src/core/modules/RousseauEligibility.sol";
 import "../../../src/mocks/AvaraNFT.sol";
 
 contract RousseauQuorumTests is Test {
@@ -30,7 +29,7 @@ contract RousseauQuorumTests is Test {
 
     function testHasQuorumFalse() public {
         nft.mint(address(this));
-        assertEq(quorum.hasQuorum(2, 0, 0), true);
+        assertEq(quorum.hasQuorum(0, 2, 0), false);
     }
 
     // TODO: Deeply test hasquorum function

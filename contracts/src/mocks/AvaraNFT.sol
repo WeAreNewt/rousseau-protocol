@@ -12,17 +12,20 @@ contract AvaraNFT is ERC721, Ownable {
   constructor(string memory name, string memory symbol) ERC721 (name, symbol) Ownable() {}
 
   function mint(address to) public {
-    super._mint(to, ++counter);
+    super._mint(to, counter);
+    isActive[counter] = true;
+    ++counter;
     ++activeCount;
   }
   
   function burn(uint256 tokenId) public {
-    super._burn(tokenId);
+    isActive[counter] = false;
     --activeCount;
+    super._burn(tokenId);
   }
 
   function setIsActive(uint256 tokenId, bool status) public onlyOwner {
     isActive[tokenId] = status;
-    status? counter++: counter--;
+    status? ++counter: --counter;
   }
 }
