@@ -8,14 +8,14 @@ on:
 defaults:
   run:
     working-directory: ./contracts
-    
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-        submodules: recursive
+          submodules: recursive
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
