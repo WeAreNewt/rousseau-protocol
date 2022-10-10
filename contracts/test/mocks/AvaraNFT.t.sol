@@ -23,7 +23,7 @@ contract AvaraNFTTest is Test {
     function testBurn() public {
         vm.startPrank(user1);
         nftCollection.mint(user1);
-        nftCollection.burn(1);
+        nftCollection.burn(0);
         assertEq(0, nftCollection.balanceOf(user1));
     }
 
