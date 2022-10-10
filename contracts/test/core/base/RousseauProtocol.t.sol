@@ -110,13 +110,11 @@ contract RousseauProtocolTests is Test {
     }
 
     function testVoteProposalIfVoteFinished() public {
-        //TODO: Look why it's exploding
         setupTestProposal();
-        
-        vm.prank(users[1]);
         vm.warp(block.timestamp + quorum.getVotePeriod() + quorum.getVoteDelay() + 1);
-        //vm.expectRevert(abi.encodeWithSignature('VoteAlreadyFinished()'));
-        //protocol.voteProposal(0, 1, 'This is a comment', abi.encode(1));
+        vm.prank(users[1]);
+        vm.expectRevert(abi.encodeWithSignature('VoteAlreadyFinished()'));
+        protocol.voteProposal(0, 0, 'This is a comment', abi.encode(1));
     }
 
     function testVoteIfAlreadyVoted() public {
@@ -142,11 +140,11 @@ contract RousseauProtocolTests is Test {
         setupTestProposal();
         vm.warp(block.timestamp + quorum.getVoteDelay() + 1);
         vm.prank(users[0]);
-        protocol.voteProposal(1, 0, 'This is a comment', abi.encode(0));
+        protocol.voteProposal(0, 0, 'This is a comment', abi.encode(0));
         vm.prank(users[1]);
-        protocol.voteProposal(1, 0, 'This is a comment', abi.encode(1));
+        protocol.voteProposal(0, 0, 'This is a comment', abi.encode(1));
         vm.prank(users[2]);
-        protocol.voteProposal(1, 0, 'This is a comment', abi.encode(2));
+        protocol.voteProposal(0, 0, 'This is a comment', abi.encode(2));
         vm.expectRevert(abi.encodeWithSignature('VoteStillGoing()'));
         protocol.executeProposal(0);
     }

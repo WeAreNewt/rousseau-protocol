@@ -9,7 +9,6 @@ import "../../libraries/DataTypes.sol";
 contract RousseauProtocol {
 
   event ProposalCreated();
-  event ProposalDeleted();
   event ProposalUpdated();
   event ProposalExecuted();
 
