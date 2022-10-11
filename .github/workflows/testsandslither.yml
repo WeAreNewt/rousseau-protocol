@@ -1,42 +1,41 @@
-name: test
-
+name: Run tests & analysis
 on:
   push:
     branches: [master]
   pull_request:
     branches: [master]
 
-env:
-  FOUNDRY_PROFILE: ci
+defaults:
+  run:
+    working-directory: ./contracts
 
 jobs:
-  check:
-    strategy:
-      fail-fast: true
-
-    name: Rousseau protocol
+  analyze:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./contracts
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-
-
       - name: Run Forge build
         run: |
           forge --version
           forge build --sizes
         id: build
-
       - name: Run Forge tests
         run: |
           forge test -vvvvv
         id: test
+      - uses: crytic/slither-action@v0.2.0
+        id: slither
+        with:
+          sarif: results.sarif
+          fail-on: none
+          ignore-compile: true
+          target: contracts/
