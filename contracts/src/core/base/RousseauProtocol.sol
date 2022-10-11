@@ -19,6 +19,7 @@ contract RousseauProtocol {
   error VoteStillGoing();
   error VoteAlreadyFinished();
   error RepositoryError();
+  error InvalidProposalType();
 
   mapping(uint256 => DataTypes.Proposal) public proposals;
 
@@ -37,6 +38,7 @@ contract RousseauProtocol {
   function createProposal(string calldata _value, uint8 _proposalType, uint256 _data, bytes calldata _elegibilityData) external {
     if(bytes(_value).length == 0 ) revert ValueMustNotBeNull();
     if(!(rousseauEligibility.canPropose(msg.sender, _elegibilityData))) revert NotElegible();
+    if(_proposalType > 2) revert InvalidProposalType();
     if(!rousseauRepository.canRemove(_data) && _proposalType == 1 || !rousseauRepository.canReplace(_data) && _proposalType == 2) revert RepositoryError();
 
     DataTypes.Proposal storage newProposal = proposals[++_counter];
@@ -52,7 +54,15 @@ contract RousseauProtocol {
     if(block.timestamp < proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()) revert VoteStillGoing();
 
     if(proposal.kind == DataTypes.ProposalType.ADD) {
-      rousseauRepository.addValue(proposal.value);
+      rousseauRepository.addValue(
+        abi.encode(
+          proposal.value,
+          proposal.votes,
+          proposal.kind,
+          proposal.data,
+          proposal.start
+        )
+      );
     } else if(proposal.kind == DataTypes.ProposalType.REMOVE) {
       rousseauRepository.removeValue(proposal.data);
     } else {
