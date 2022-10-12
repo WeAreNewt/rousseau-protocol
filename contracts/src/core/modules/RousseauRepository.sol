@@ -11,10 +11,10 @@ contract RousseauRepository is IRousseauRepository, Ownable {
 
     bool initialized = false;
 
-    mapping(uint256 => uint256) private timelocks;
-    mapping(uint256 => DataTypes.Comment) private comments;
+    mapping(uint256 => uint256) public timelocks;
+    mapping(uint256 => DataTypes.Comment[]) public comments;
 
-    uint256[] activeValues;
+    uint256[] public activeValues;
 
     error Timelocked();
     error NotInitialized();
@@ -50,13 +50,13 @@ contract RousseauRepository is IRousseauRepository, Ownable {
 
     function removeValue(
         uint256 proposalId,
-        string calldata value,
         uint256 data,
         uint256 date,
         bytes calldata customData
     ) external isInitialized isProtocol {
-        if (timelocks[data] > block.timestamp) revert Timelocked();
-        timelocks[proposalId] = dynamicBytesToUint(customData);
+        if (timelocks[data] > block.timestamp || timelocks[data] == 1)
+            revert Timelocked();
+        delete timelocks[proposalId];
         unchecked {
             for (uint256 i = 0; i < activeValues.length; i++) {
                 if (activeValues[i] == proposalId) {
@@ -75,11 +75,12 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         uint256 date,
         bytes calldata customData
     ) external isInitialized isProtocol {
-        if (timelocks[data] > block.timestamp) revert Timelocked();
+        if (timelocks[data] > block.timestamp || timelocks[data] == 1)
+            revert Timelocked();
         timelocks[proposalId] = dynamicBytesToUint(customData);
         unchecked {
             for (uint256 i = 0; i < activeValues.length; i++) {
-                if (activeValues[i] == proposalId) {
+                if (activeValues[i] == data) {
                     activeValues[i] = proposalId;
                     break;
                 }
@@ -90,40 +91,35 @@ contract RousseauRepository is IRousseauRepository, Ownable {
     // 0 means no timelock, 1 means timelock is forever, otherwise the number is the block.timestamp when the timelock ends
     function canRemove(
         uint256 proposalId,
-        uint256 kind,
         uint256 data,
         uint256 start
     ) external isInitialized isProtocol returns (bool) {
-        return
-            timelocks[proposalId] < block.timestamp &&
-            timelocks[proposalId] != 1;
+        return timelocks[data] < block.timestamp && timelocks[data] != 1;
     }
 
     // 0 means no timelock, 1 means timelock is forever, otherwise the number is the block.timestamp when the timelock ends
     function canReplace(
         uint256 proposalId,
-        uint256 kind,
         uint256 data,
         uint256 start
     ) external isInitialized isProtocol returns (bool) {
-        return
-            timelocks[proposalId] < block.timestamp &&
-            timelocks[proposalId] != 1;
+        return timelocks[data] < block.timestamp && timelocks[data] != 1;
     }
 
-    function addComment(uint256 proposalId, string calldata comment)
-        external
-        isInitialized
-        isProtocol
-    {
-        comments[proposalId] = DataTypes.Comment(
-            comment,
-            block.timestamp,
-            msg.sender
+    function addComment(
+        uint256 proposalId,
+        string calldata comment,
+        address author
+    ) external isInitialized isProtocol {
+        comments[proposalId].push(
+            DataTypes.Comment(comment, block.timestamp, author)
         );
     }
 
-    function dynamicBytesToUint(bytes calldata input) internal returns (uint256) {
+    function dynamicBytesToUint(bytes calldata input)
+        internal
+        returns (uint256)
+    {
         bytes memory b = input;
         uint256 result = 0;
         for (uint256 i = 0; i < b.length; i++) {
@@ -134,4 +130,4 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         }
         return result;
     }
- }
+}

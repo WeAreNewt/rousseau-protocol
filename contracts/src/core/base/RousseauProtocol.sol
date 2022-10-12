@@ -60,13 +60,11 @@ contract RousseauProtocol {
         if (
             (!rousseauRepository.canRemove(
                 _counter,
-                _proposalType,
                 _data,
                 block.timestamp
             ) && _proposalType == 1) ||
             (!rousseauRepository.canReplace(
                 _counter,
-                _proposalType,
                 _data,
                 block.timestamp
             ) && _proposalType == 2)
@@ -100,7 +98,6 @@ contract RousseauProtocol {
         } else if (proposal.kind == DataTypes.ProposalType.REMOVE) {
             rousseauRepository.removeValue(
                 _proposalId,
-                proposal.value,
                 proposal.data,
                 block.timestamp,
                 proposal.customData
@@ -137,7 +134,7 @@ contract RousseauProtocol {
 
         proposal.votes[DataTypes.VoteType(_voteType)] += rousseauEligibility
             .getVoteWeight(msg.sender, _proposalId, _data);
-        rousseauRepository.addComment(_proposalId, _comment);
+        rousseauRepository.addComment(_proposalId, _comment, msg.sender);
         rousseauEligibility.setVoted(msg.sender, _proposalId, _data);
     }
 }

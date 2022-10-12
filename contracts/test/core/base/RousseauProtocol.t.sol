@@ -52,48 +52,48 @@ contract RousseauProtocolTests is Test {
     function testCreateProposalWithNullValue() public {
         vm.prank(users[0]);
         vm.expectRevert(abi.encodeWithSignature("ValueMustNotBeNull()"));
-        protocol.createProposal("", 1, 0, abi.encode(""), abi.encode(0));
+        protocol.createProposal("", 1, 0, abi.encode(""), abi.encode('0'));
     }
 
     function testCreateProposalWithoutNFT() public {
         vm.prank(users[4]);
         vm.expectRevert(abi.encodeWithSignature("NotElegible()"));
-        protocol.createProposal("test", 1, 0, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 1, 0, abi.encode(""), abi.encode('0'));
     }
 
     function testCreateProposalWithInactiveNFT() public {
         vm.prank(users[3]);
         vm.expectRevert(abi.encodeWithSignature("NotElegible()"));
-        protocol.createProposal("test", 1, 0, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 1, 0, abi.encode(""), abi.encode('0'));
     }
 
     function testCreateProposalWithInvalidType() public {
         vm.prank(users[0]);
         vm.expectRevert(abi.encodeWithSignature("InvalidProposalType()"));
-        protocol.createProposal("test", 3, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 3, 1, abi.encode(""), abi.encode('0'));
     }
 
     function testCreateRemoveProposalWithRepositoryLock() public {
         vm.prank(users[0]);
         //TODO: Revisit once we have the repository done: vm.expectRevert(abi.encodeWithSignature('RepositoryError()'));
-        protocol.createProposal("test", 1, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 1, 1, abi.encode(""), abi.encode('0'));
     }
 
     function testCreateReplaceProposalWithRepositoryLock() public {
         vm.prank(users[0]);
         //TODO: Revisit once we have the repository done: vm.expectRevert(abi.encodeWithSignature('RepositoryError()'));
-        protocol.createProposal("test", 2, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 2, 1, abi.encode(""), abi.encode('0'));
     }
 
     function testCreateRemoveProposalWithoutRepositoryLock() public {
         vm.prank(users[0]);
-        protocol.createProposal("test", 1, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 1, 1, abi.encode(""), abi.encode('0'));
         //TODO: check the revert
     }
 
     function testCreateReplaceProposalWithoutRepositoryLock() public {
         vm.prank(users[0]);
-        protocol.createProposal("test", 2, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 2, 1, abi.encode(""), abi.encode('0'));
         //TODO: check if the proposal was created
     }
 
@@ -163,7 +163,7 @@ contract RousseauProtocolTests is Test {
 
     function testExecuteAddProposal() public {
         vm.prank(users[0]);
-        protocol.createProposal("test", 0, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 0, 1, abi.encode(""), abi.encode('0'));
         fillQuorum();
         vm.warp(block.timestamp + quorum.getVotePeriod() + 1);
         protocol.executeProposal(0);
@@ -171,7 +171,7 @@ contract RousseauProtocolTests is Test {
 
     function testExecutionRemoveProposal() public {
         vm.prank(users[0]);
-        protocol.createProposal("test", 1, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 1, 1, abi.encode(""), abi.encode('0'));
         fillQuorum();
         vm.warp(block.timestamp + quorum.getVotePeriod() + 1);
         protocol.executeProposal(0);
@@ -179,7 +179,7 @@ contract RousseauProtocolTests is Test {
 
     function testExecutionReplaceProposal() public {
         vm.prank(users[0]);
-        protocol.createProposal("test", 2, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 2, 1, abi.encode(""), abi.encode('0'));
         fillQuorum();
         vm.warp(block.timestamp + quorum.getVotePeriod() + 1);
         protocol.executeProposal(0);
@@ -187,7 +187,7 @@ contract RousseauProtocolTests is Test {
 
     function setupTestProposal() internal {
         vm.prank(users[0]);
-        protocol.createProposal("test", 1, 1, abi.encode(""), abi.encode(0));
+        protocol.createProposal("test", 1, 1, abi.encode(""), abi.encode('0'));
     }
 
     function fillQuorum() internal {
