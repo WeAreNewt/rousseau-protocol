@@ -23,7 +23,7 @@ contract RousseauEligibilityTests is Test {
         assertEq(nft.isActive(0), true);
         assertEq(nft.isActive(1), false);
     }
- 
+
     function testCanVoteIfActiveNFTHolderNotVoted() public {
         bool res = eligibility.canVote(users[0], 0, abi.encode(0));
         assertTrue(res);

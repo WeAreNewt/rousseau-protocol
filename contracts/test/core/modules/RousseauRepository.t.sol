@@ -292,7 +292,7 @@ contract RousseauRepositoryTests is Test {
         string memory value;
         uint256 date;
         address author;
-        (value, date, author) = repository.comments(0,0);
+        (value, date, author) = repository.comments(0, 0);
         assertEq(author, msg.sender);
     }
 }
