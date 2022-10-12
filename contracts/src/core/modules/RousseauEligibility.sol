@@ -32,6 +32,7 @@ contract RousseauEligibility is IRousseauEligibility {
         return false;
     }
 
+    function canVote(
         address _address,
         uint256 _proposalId,
         bytes calldata data
