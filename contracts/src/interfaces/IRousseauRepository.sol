@@ -12,7 +12,6 @@ interface IRousseauRepository {
 
     function removeValue(
         uint256 proposalId,
-        string calldata value,
         uint256 data,
         uint256 date,
         bytes calldata customData
@@ -28,17 +27,19 @@ interface IRousseauRepository {
 
     function canRemove(
         uint256 proposalId,
-        uint256 kind,
         uint256 data,
         uint256 start
     ) external returns (bool);
 
     function canReplace(
         uint256 proposalId,
-        uint256 kind,
         uint256 data,
         uint256 start
     ) external returns (bool);
 
-    function addComment(uint256 proposalId, string calldata value) external;
+    function addComment(
+        uint256 proposalId,
+        string calldata value,
+        address author
+    ) external;
 }
