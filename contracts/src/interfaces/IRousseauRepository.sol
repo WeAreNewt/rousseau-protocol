@@ -39,4 +39,3 @@ interface IRousseauRepository {
 
     function addComment(uint256 proposalId, string calldata value) external;
 }
-∫

@@ -17,7 +17,7 @@ contract AvaraNFT is ERC721Enumerable, Ownable {
     function mint(address to) public {
         super._mint(to, counter);
         isActive[counter] = true;
-        ++counter;∫
+        ++counter;
         ++activeCount;
     }
 
