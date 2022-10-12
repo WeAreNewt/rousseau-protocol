@@ -1,4 +1,4 @@
- // SPDX-License-Identifier: BSD-3-Clause
+// SPDX-License-Identifier: BSD-3-Clause
 pragma solidity 0.8.16;
 
 interface IRousseauQuorum {
@@ -12,4 +12,3 @@ interface IRousseauQuorum {
 
     function getVoteDelay() external view returns (uint256);
 }
- 

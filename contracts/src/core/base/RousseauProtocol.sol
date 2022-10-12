@@ -58,16 +58,10 @@ contract RousseauProtocol {
         if (!(rousseauEligibility.canPropose(msg.sender, _elegibilityData)))
             revert NotElegible();
         if (
-            (!rousseauRepository.canRemove(
-                _counter,
-                _data,
-                block.timestamp
-            ) && _proposalType == 1) ||
-            (!rousseauRepository.canReplace(
-                _counter,
-                _data,
-                block.timestamp
-            ) && _proposalType == 2)
+            (!rousseauRepository.canRemove(_counter, _data, block.timestamp) &&
+                _proposalType == 1) ||
+            (!rousseauRepository.canReplace(_counter, _data, block.timestamp) &&
+                _proposalType == 2)
         ) revert RepositoryError();
     }
 
