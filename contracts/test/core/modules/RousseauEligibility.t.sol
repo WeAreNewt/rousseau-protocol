@@ -12,7 +12,7 @@ contract RousseauEligibilityTests is Test {
     address[] users = [address(1), address(2), address(3)];
 
     function setUp() public {
-        nft = new AvaraNFT('AVARA NFT', 'AVR');
+        nft = new AvaraNFT("AVARA NFT", "AVR");
         eligibility = new RousseauEligibility(address(nft));
 
         nft.mint(users[0]);
@@ -23,7 +23,7 @@ contract RousseauEligibilityTests is Test {
         assertEq(nft.isActive(0), true);
         assertEq(nft.isActive(1), false);
     }
-
+ 
     function testCanVoteIfActiveNFTHolderNotVoted() public {
         bool res = eligibility.canVote(users[0], 0, abi.encode(0));
         assertTrue(res);
@@ -33,7 +33,7 @@ contract RousseauEligibilityTests is Test {
         bool res = eligibility.canVote(users[1], 0, abi.encode(1));
         assertFalse(res);
     }
-    
+
     function testCanVoteIfNotNFTHolder() public {
         bool res = eligibility.canVote(users[2], 0, abi.encode(0));
         assertFalse(res);
@@ -48,12 +48,11 @@ contract RousseauEligibilityTests is Test {
         bool res = eligibility.canPropose(users[1], abi.encode(1));
         assertFalse(res);
     }
-    
+
     function testCanProposeIfNotNFTHolder() public {
         bool res = eligibility.canPropose(users[2], abi.encode(0));
         assertFalse(res);
     }
-
 
     function testSetVoted() public {
         eligibility.setVoted(users[0], 0, abi.encode(0));
