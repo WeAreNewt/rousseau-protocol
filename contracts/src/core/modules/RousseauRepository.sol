@@ -124,7 +124,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
     }
 
     function dynamicBytesToUint(bytes calldata input) internal returns (uint256) {
-        bytes memory b = abi.encode(input);
+        bytes memory b = input;
         uint256 result = 0;
         for (uint256 i = 0; i < b.length; i++) {
             uint256 c = uint256(uint8(b[i]));
