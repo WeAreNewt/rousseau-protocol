@@ -7,8 +7,7 @@ import "../../libraries/DataTypes.sol";
 import "@openzeppelin/access/Ownable.sol";
 
 contract RousseauRepository is IRousseauRepository, Ownable {
-
-    RousseauProtocol protocol;
+    address private _protocol;
 
     bool initialized = false;
 
@@ -17,13 +16,22 @@ contract RousseauRepository is IRousseauRepository, Ownable {
 
     error Timelocked();
     error NotInitialized();
+    error NotProtocol();
 
     modifier isInitialized() {
         if (!initialized) revert NotInitialized();
         _;
     }
 
-    constructor() {
+    modifier isProtocol() {
+        if (msg.sender != _protocol) revert NotProtocol();
+        _;
+    }
+
+    constructor() {}
+
+    function initialize(address protocol) external onlyOwner {
+        _protocol = protocol;
         initialized = true;
     }
 
@@ -32,8 +40,9 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         string calldata value,
         uint256 data,
         uint256 date
-    ) external isInitialized {;
-        //TODO: Only RousseauProtocol
+    ) external isInitialized isProtocol {
+        if (timelocks[proposalId] > block.timestamp) revert Timelocked();
+        
     }
 
     function removeValue(
@@ -41,8 +50,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         string calldata value,
         uint256 data,
         uint256 date
-    ) external isInitialized {
-        //TODO:  Only RousseauProtocol
+    ) external isInitialized isProtocol {
     }
 
     function replaceValue(
@@ -50,19 +58,18 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         string calldata value,
         uint256 data,
         uint256 date
-    ) external isInitialized {
-        //TODO: Only RousseauProtocol
+    ) external isInitialized isProtocol {
     }
 
-    // TODO: check if timelock is there
     function canRemove(
         uint256 proposalId,
         uint256 kind,
         uint256 data,
         uint256 start
-    ) external isInitialized returns (bool) {
+    ) external isInitialized isProtocol returns (bool) {
         return
-            timelocks[proposalId] < block.timestamp && timelocks[proposalId] > 0;
+            timelocks[proposalId] < block.timestamp &&
+            timelocks[proposalId] != 1;
     }
 
     function canReplace(
@@ -70,16 +77,17 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         uint256 kind,
         uint256 data,
         uint256 start
-    ) external isInitialized returns (bool) {
+    ) external isInitialized isProtocol returns (bool) {
         return
-            timelocks[proposalId] < block.timestamp && timelocks[proposalId] > 0;
+            timelocks[proposalId] < block.timestamp &&
+            timelocks[proposalId] != 1;
     }
 
     function addComment(uint256 proposalId, string calldata comment)
         external
         isInitialized
+        isProtocol
     {
-        //TODO: Only RousseauProtocol
         comments[proposalId] = DataTypes.Comment(
             comment,
             block.timestamp,

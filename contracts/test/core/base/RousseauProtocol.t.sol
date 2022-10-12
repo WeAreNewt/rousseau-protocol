@@ -35,7 +35,7 @@ contract RousseauProtocolTests is Test {
             address(quorum),
             address(repository)
         );
-
+        repository.initialize(address(protocol));
         /*
         Setup users to do tests, here your setup might change because you will need to give different eligibility status to different users
         */
