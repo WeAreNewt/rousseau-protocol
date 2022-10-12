@@ -19,6 +19,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
     error Timelocked();
     error NotInitialized();
     error NotProtocol();
+    error ZeroAddressNotAllowed();
 
     modifier isInitialized() {
         if (!initialized) revert NotInitialized();
@@ -33,6 +34,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
     constructor() {}
 
     function initialize(address protocol) external onlyOwner {
+        if(protocol == address(0)) revert ZeroAddressNotAllowed();
         _protocol = protocol;
         initialized = true;
     }

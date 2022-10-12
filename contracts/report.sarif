@@ -10,6 +10,20 @@
           "version": "0.9.0",
           "rules": [
             {
+              "id": "2-1-events-access",
+              "name": "events-access",
+              "properties": {
+                "precision": "high",
+                "security-severity": "3.0"
+              },
+              "shortDescription": {
+                "text": "Missing events access control"
+              },
+              "help": {
+                "text": "Emit an event for critical parameter changes."
+              }
+            },
+            {
               "id": "2-1-calls-loop",
               "name": "calls-loop",
               "properties": {
@@ -21,20 +35,6 @@
               },
               "help": {
                 "text": "Favor [pull over push](https://github.com/ethereum/wiki/wiki/Safety#favor-pull-over-push-for-external-calls) strategy for external calls."
-              }
-            },
-            {
-              "id": "2-1-reentrancy-benign",
-              "name": "reentrancy-benign",
-              "properties": {
-                "precision": "high",
-                "security-severity": "3.0"
-              },
-              "shortDescription": {
-                "text": "Reentrancy vulnerabilities"
-              },
-              "help": {
-                "text": "Apply the [`check-effects-interactions` pattern](http://solidity.readthedocs.io/en/v0.4.21/security-considerations.html#re-entrancy)."
               }
             },
             {
@@ -52,6 +52,20 @@
               }
             },
             {
+              "id": "3-1-costly-loop",
+              "name": "costly-loop",
+              "properties": {
+                "precision": "high",
+                "security-severity": "0.0"
+              },
+              "shortDescription": {
+                "text": "Costly operations inside a loop"
+              },
+              "help": {
+                "text": "Use a local variable to hold the loop computation result."
+              }
+            },
+            {
               "id": "3-0-naming-convention",
               "name": "naming-convention",
               "properties": {
@@ -64,68 +78,40 @@
               "help": {
                 "text": "Follow the Solidity [naming convention](https://solidity.readthedocs.io/en/v0.4.25/style-guide.html#naming-conventions)."
               }
-            },
-            {
-              "id": "3-0-unused-state",
-              "name": "unused-state",
-              "properties": {
-                "precision": "very-high",
-                "security-severity": "0.0"
-              },
-              "shortDescription": {
-                "text": "Unused state variable"
-              },
-              "help": {
-                "text": "Remove unused state variables."
-              }
-            },
-            {
-              "id": "4-0-constable-states",
-              "name": "constable-states",
-              "properties": {
-                "precision": "very-high",
-                "security-severity": "0.0"
-              },
-              "shortDescription": {
-                "text": "State variables that could be declared constant"
-              },
-              "help": {
-                "text": "Add the `constant` attributes to state variables that never change."
-              }
             }
           ]
         }
       },
       "results": [
         {
-          "ruleId": "2-1-calls-loop",
+          "ruleId": "2-1-events-access",
           "message": {
-            "text": "RousseauProtocolTests.setUp() (test/core/base/RousseauProtocol.t.sol#22-42) has external calls inside a loop: nft.mint(users[i]) (test/core/base/RousseauProtocol.t.sol#36)\n",
-            "markdown": "[RousseauProtocolTests.setUp()](test/core/base/RousseauProtocol.t.sol#L22-L42) has external calls inside a loop: [nft.mint(users[i])](test/core/base/RousseauProtocol.t.sol#L36)\n"
+            "text": "RousseauRepository.initialize(address) (src/core/modules/RousseauRepository.sol#36-40) should emit an event for: \n\t- _protocol = protocol (src/core/modules/RousseauRepository.sol#38) \n",
+            "markdown": "[RousseauRepository.initialize(address)](src/core/modules/RousseauRepository.sol#L36-L40) should emit an event for: \n\t- [_protocol = protocol](src/core/modules/RousseauRepository.sol#L38) \n"
           },
           "level": "warning",
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "test/core/base/RousseauProtocol.t.sol"
+                  "uri": "src/core/modules/RousseauRepository.sol"
                 },
                 "region": {
-                  "startLine": 22,
-                  "endLine": 42
+                  "startLine": 36,
+                  "endLine": 40
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "24e3ee5d9ed68d01e868246b3e39a1fccd1bac6e23e4872f4d66d31144b40036"
+            "id": "20d520c2b6aee4d00e2b1a885d850dec9ff98a4a0fe6af1be73bcbe7472f5164"
           }
         },
         {
           "ruleId": "2-1-calls-loop",
           "message": {
-            "text": "RousseauEligibility.canPropose(address,bytes) (src/core/modules/RousseauEligibility.sol#19-26) has external calls inside a loop: nftCollection.isActive(nftCollection.tokenOfOwnerByIndex(_address,i)) (src/core/modules/RousseauEligibility.sol#21)\n",
-            "markdown": "[RousseauEligibility.canPropose(address,bytes)](src/core/modules/RousseauEligibility.sol#L19-L26) has external calls inside a loop: [nftCollection.isActive(nftCollection.tokenOfOwnerByIndex(_address,i))](src/core/modules/RousseauEligibility.sol#L21)\n"
+            "text": "RousseauEligibility.canPropose(address,bytes) (src/core/modules/RousseauEligibility.sol#18-33) has external calls inside a loop: i < nftCollection.balanceOf(_address) (src/core/modules/RousseauEligibility.sol#23)\n",
+            "markdown": "[RousseauEligibility.canPropose(address,bytes)](src/core/modules/RousseauEligibility.sol#L18-L33) has external calls inside a loop: [i < nftCollection.balanceOf(_address)](src/core/modules/RousseauEligibility.sol#L23)\n"
           },
           "level": "warning",
           "locations": [
@@ -135,21 +121,21 @@
                   "uri": "src/core/modules/RousseauEligibility.sol"
                 },
                 "region": {
-                  "startLine": 19,
-                  "endLine": 26
+                  "startLine": 18,
+                  "endLine": 33
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "28f74ecc645a105c0b717d026200c16f5fe7dfe579d5377c3a09fb0e7cf53d8e"
+            "id": "2d916650704b139fe32125867680c33b9740c0f2d0164ad38add9bec10c91fb4"
           }
         },
         {
           "ruleId": "2-1-calls-loop",
           "message": {
-            "text": "RousseauEligibility.canPropose(address,bytes) (src/core/modules/RousseauEligibility.sol#19-26) has external calls inside a loop: i < nftCollection.balanceOf(_address) (src/core/modules/RousseauEligibility.sol#20)\n",
-            "markdown": "[RousseauEligibility.canPropose(address,bytes)](src/core/modules/RousseauEligibility.sol#L19-L26) has external calls inside a loop: [i < nftCollection.balanceOf(_address)](src/core/modules/RousseauEligibility.sol#L20)\n"
+            "text": "RousseauEligibility.canPropose(address,bytes) (src/core/modules/RousseauEligibility.sol#18-33) has external calls inside a loop: nftCollection.isActive(nftCollection.tokenOfOwnerByIndex(_address,i)) (src/core/modules/RousseauEligibility.sol#25-27)\n",
+            "markdown": "[RousseauEligibility.canPropose(address,bytes)](src/core/modules/RousseauEligibility.sol#L18-L33) has external calls inside a loop: [nftCollection.isActive(nftCollection.tokenOfOwnerByIndex(_address,i))](src/core/modules/RousseauEligibility.sol#L25-L27)\n"
           },
           "level": "warning",
           "locations": [
@@ -159,45 +145,69 @@
                   "uri": "src/core/modules/RousseauEligibility.sol"
                 },
                 "region": {
-                  "startLine": 19,
-                  "endLine": 26
+                  "startLine": 18,
+                  "endLine": 33
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "6951fd4f906ac134a29ef005db032ddb1d747d64d4d61e2af1f6c588ad596d89"
+            "id": "379c24208cf6ec4bbea795cda24e2ef9825d9d304ef74c8d235c8ce6449156dd"
           }
         },
         {
-          "ruleId": "2-1-reentrancy-benign",
+          "ruleId": "2-1-timestamp",
           "message": {
-            "text": "Reentrancy in AvaraNFTTest.setUp() (test/mocks/AvaraNFT.t.sol#13-16):\n\tExternal calls:\n\t- vm.prank(deployer) (test/mocks/AvaraNFT.t.sol#14)\n\tState variables written after the call(s):\n\t- nftCollection = new AvaraNFT(TEST,TST) (test/mocks/AvaraNFT.t.sol#15)\n",
-            "markdown": "Reentrancy in [AvaraNFTTest.setUp()](test/mocks/AvaraNFT.t.sol#L13-L16):\n\tExternal calls:\n\t- [vm.prank(deployer)](test/mocks/AvaraNFT.t.sol#L14)\n\tState variables written after the call(s):\n\t- [nftCollection = new AvaraNFT(TEST,TST)](test/mocks/AvaraNFT.t.sol#L15)\n"
+            "text": "RousseauRepository.replaceValue(uint256,string,uint256,uint256,bytes) (src/core/modules/RousseauRepository.sol#73-91) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- timelocks[data] > block.timestamp || timelocks[data] == 1 (src/core/modules/RousseauRepository.sol#80)\n",
+            "markdown": "[RousseauRepository.replaceValue(uint256,string,uint256,uint256,bytes)](src/core/modules/RousseauRepository.sol#L73-L91) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [timelocks[data] > block.timestamp || timelocks[data] == 1](src/core/modules/RousseauRepository.sol#L80)\n"
           },
           "level": "warning",
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "test/mocks/AvaraNFT.t.sol"
+                  "uri": "src/core/modules/RousseauRepository.sol"
                 },
                 "region": {
-                  "startLine": 13,
-                  "endLine": 16
+                  "startLine": 73,
+                  "endLine": 91
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "523a3be317752cee4a701ef5271f5a01d8d8961c0a8c7ff93ac115a2fa39df02"
+            "id": "4be807d70e8aa4767c33d5ecd042496204ea306ea3c0a0a032c6b65ae8b8ecc9"
           }
         },
         {
           "ruleId": "2-1-timestamp",
           "message": {
-            "text": "RousseauProtocol.voteProposal(uint256,uint8,string,bytes) (src/core/base/RousseauProtocol.sol#67-77) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- block.timestamp < proposal.start + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#71)\n\t- block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#72)\n",
-            "markdown": "[RousseauProtocol.voteProposal(uint256,uint8,string,bytes)](src/core/base/RousseauProtocol.sol#L67-L77) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [block.timestamp < proposal.start + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L71)\n\t- [block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L72)\n"
+            "text": "RousseauRepository.canRemove(uint256,uint256,uint256) (src/core/modules/RousseauRepository.sol#94-100) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- timelocks[data] < block.timestamp && timelocks[data] != 1 (src/core/modules/RousseauRepository.sol#99)\n",
+            "markdown": "[RousseauRepository.canRemove(uint256,uint256,uint256)](src/core/modules/RousseauRepository.sol#L94-L100) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [timelocks[data] < block.timestamp && timelocks[data] != 1](src/core/modules/RousseauRepository.sol#L99)\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/modules/RousseauRepository.sol"
+                },
+                "region": {
+                  "startLine": 94,
+                  "endLine": 100
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "5da8994292fe8d2845aa1210fc1ec4ba8d827a8270a62b3c2e0c40cf81a5db4a"
+          }
+        },
+        {
+          "ruleId": "2-1-timestamp",
+          "message": {
+            "text": "RousseauProtocol.executeProposal(uint256) (src/core/base/RousseauProtocol.sol#74-114) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- block.timestamp < proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#84-87)\n",
+            "markdown": "[RousseauProtocol.executeProposal(uint256)](src/core/base/RousseauProtocol.sol#L74-L114) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [block.timestamp < proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L84-L87)\n"
           },
           "level": "warning",
           "locations": [
@@ -207,45 +217,69 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 67,
-                  "endLine": 77
+                  "startLine": 74,
+                  "endLine": 114
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "10bb232c01eb97cbaba204f9e5e3454f80d6776165c6174c0e97e563e6c1afba"
+            "id": "a407551763326f8114d60a4906d96d83ef14b67c0ab04f5102379424ec0dc152"
           }
         },
         {
           "ruleId": "2-1-timestamp",
           "message": {
-            "text": "RousseauProtocol.executeProposal(uint256) (src/core/base/RousseauProtocol.sol#53-65) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- block.timestamp < proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#56)\n",
-            "markdown": "[RousseauProtocol.executeProposal(uint256)](src/core/base/RousseauProtocol.sol#L53-L65) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [block.timestamp < proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L56)\n"
+            "text": "RousseauRepository.canReplace(uint256,uint256,uint256) (src/core/modules/RousseauRepository.sol#103-109) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- timelocks[data] < block.timestamp && timelocks[data] != 1 (src/core/modules/RousseauRepository.sol#108)\n",
+            "markdown": "[RousseauRepository.canReplace(uint256,uint256,uint256)](src/core/modules/RousseauRepository.sol#L103-L109) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [timelocks[data] < block.timestamp && timelocks[data] != 1](src/core/modules/RousseauRepository.sol#L108)\n"
           },
           "level": "warning",
           "locations": [
             {
               "physicalLocation": {
                 "artifactLocation": {
-                  "uri": "src/core/base/RousseauProtocol.sol"
+                  "uri": "src/core/modules/RousseauRepository.sol"
+                },
+                "region": {
+                  "startLine": 103,
+                  "endLine": 109
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "b0d9ffd33dc8c4e38f8e5ea4fd0996b5ac110c749fcf01184704aa1746d4ed95"
+          }
+        },
+        {
+          "ruleId": "2-1-timestamp",
+          "message": {
+            "text": "RousseauRepository.removeValue(uint256,uint256,uint256,bytes) (src/core/modules/RousseauRepository.sol#53-71) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- timelocks[data] > block.timestamp || timelocks[data] == 1 (src/core/modules/RousseauRepository.sol#59)\n",
+            "markdown": "[RousseauRepository.removeValue(uint256,uint256,uint256,bytes)](src/core/modules/RousseauRepository.sol#L53-L71) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [timelocks[data] > block.timestamp || timelocks[data] == 1](src/core/modules/RousseauRepository.sol#L59)\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/modules/RousseauRepository.sol"
                 },
                 "region": {
                   "startLine": 53,
-                  "endLine": 65
+                  "endLine": 71
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "6e727113cd29f9df608507133e6ca5128a9b6306fd2ea3c0b3c0aa4d5ee7fdfd"
+            "id": "bd8d84c7adce89bd464044ef250e08834bf9f05fc881078dd4c2f9482eef49f5"
           }
         },
         {
           "ruleId": "2-1-timestamp",
           "message": {
-            "text": "RousseauProtocol.createProposal(string,uint8,uint256,bytes) (src/core/base/RousseauProtocol.sol#38-51) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- ! rousseauRepository.canRemove(_counter,_proposalType,_data,block.timestamp) && _proposalType == 1 || ! rousseauRepository.canReplace(_counter,_proposalType,_data,block.timestamp) && _proposalType == 2 (src/core/base/RousseauProtocol.sol#50)\n",
-            "markdown": "[RousseauProtocol.createProposal(string,uint8,uint256,bytes)](src/core/base/RousseauProtocol.sol#L38-L51) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [! rousseauRepository.canRemove(_counter,_proposalType,_data,block.timestamp) && _proposalType == 1 || ! rousseauRepository.canReplace(_counter,_proposalType,_data,block.timestamp) && _proposalType == 2](src/core/base/RousseauProtocol.sol#L50)\n"
+            "text": "RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes) (src/core/base/RousseauProtocol.sol#41-72) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- (! rousseauRepository.canRemove(_counter,_data,block.timestamp) && _proposalType == 1) || (! rousseauRepository.canReplace(_counter,_data,block.timestamp) && _proposalType == 2) (src/core/base/RousseauProtocol.sol#61-70)\n",
+            "markdown": "[RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)](src/core/base/RousseauProtocol.sol#L41-L72) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [(! rousseauRepository.canRemove(_counter,_data,block.timestamp) && _proposalType == 1) || (! rousseauRepository.canReplace(_counter,_data,block.timestamp) && _proposalType == 2)](src/core/base/RousseauProtocol.sol#L61-L70)\n"
           },
           "level": "warning",
           "locations": [
@@ -255,21 +289,69 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 38,
-                  "endLine": 51
+                  "startLine": 41,
+                  "endLine": 72
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "df7230c44a86bd5f5f0cfdea7718de775747c176a4d85a8d1dfc4072aec21b32"
+            "id": "c0d0dc46531131c51d4145beeb04c93371946638ac8da10c275458026a9707eb"
+          }
+        },
+        {
+          "ruleId": "2-1-timestamp",
+          "message": {
+            "text": "RousseauProtocol.voteProposal(uint256,uint8,string,bytes) (src/core/base/RousseauProtocol.sol#116-139) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- block.timestamp < proposal.start + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#126)\n\t- block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#129-132)\n",
+            "markdown": "[RousseauProtocol.voteProposal(uint256,uint8,string,bytes)](src/core/base/RousseauProtocol.sol#L116-L139) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [block.timestamp < proposal.start + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L126)\n\t- [block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L129-L132)\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/base/RousseauProtocol.sol"
+                },
+                "region": {
+                  "startLine": 116,
+                  "endLine": 139
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "f992fdd5538edcac7b5c41feb122c46b24222c42351de9055970259e771f009c"
+          }
+        },
+        {
+          "ruleId": "3-1-costly-loop",
+          "message": {
+            "text": "RousseauRepository.removeValue(uint256,uint256,uint256,bytes) (src/core/modules/RousseauRepository.sol#53-71) has costly operations inside a loop:\n\t- activeValues.pop() (src/core/modules/RousseauRepository.sol#66)\n",
+            "markdown": "[RousseauRepository.removeValue(uint256,uint256,uint256,bytes)](src/core/modules/RousseauRepository.sol#L53-L71) has costly operations inside a loop:\n\t- [activeValues.pop()](src/core/modules/RousseauRepository.sol#L66)\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/modules/RousseauRepository.sol"
+                },
+                "region": {
+                  "startLine": 53,
+                  "endLine": 71
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "3bb42d9143b0a223ab9017606426ad3372e85f7c97401992b3116bb78d039c57"
           }
         },
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauEligibility.canVote(address,uint256,bytes)._address (src/core/modules/RousseauEligibility.sol#28) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauEligibility.canVote(address,uint256,bytes)._address](src/core/modules/RousseauEligibility.sol#L28) is not in mixedCase\n"
+            "text": "Parameter RousseauEligibility.canVote(address,uint256,bytes)._address (src/core/modules/RousseauEligibility.sol#36) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauEligibility.canVote(address,uint256,bytes)._address](src/core/modules/RousseauEligibility.sol#L36) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -279,8 +361,8 @@
                   "uri": "src/core/modules/RousseauEligibility.sol"
                 },
                 "region": {
-                  "startLine": 28,
-                  "endLine": 28
+                  "startLine": 36,
+                  "endLine": 36
                 }
               }
             }
@@ -292,8 +374,8 @@
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes)._elegibilityData (src/core/base/RousseauProtocol.sol#38) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes)._elegibilityData](src/core/base/RousseauProtocol.sol#L38) is not in mixedCase\n"
+            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._proposalType (src/core/base/RousseauProtocol.sol#43) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._proposalType](src/core/base/RousseauProtocol.sol#L43) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -303,21 +385,21 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 38,
-                  "endLine": 38
+                  "startLine": 43,
+                  "endLine": 43
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "186aa9facdc38d61e8217c8bbebf9d72ab41b64de5d963a7fef8dc1b755570dd"
+            "id": "10520423e1f3163d5ed57ef0b9b3babbcb2782f4db8268c65d523b54c81e57e1"
           }
         },
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Variable RousseauProtocol._counter (src/core/base/RousseauProtocol.sol#26) is not in mixedCase\n",
-            "markdown": "Variable [RousseauProtocol._counter](src/core/base/RousseauProtocol.sol#L26) is not in mixedCase\n"
+            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._value (src/core/base/RousseauProtocol.sol#42) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._value](src/core/base/RousseauProtocol.sol#L42) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -327,8 +409,32 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 26,
-                  "endLine": 26
+                  "startLine": 42,
+                  "endLine": 42
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "14c07776abb3760350320ad33069883c87b687f5fe6b9e4e4038f5e4da68ccf0"
+          }
+        },
+        {
+          "ruleId": "3-0-naming-convention",
+          "message": {
+            "text": "Variable RousseauProtocol._counter (src/core/base/RousseauProtocol.sol#25) is not in mixedCase\n",
+            "markdown": "Variable [RousseauProtocol._counter](src/core/base/RousseauProtocol.sol#L25) is not in mixedCase\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/base/RousseauProtocol.sol"
+                },
+                "region": {
+                  "startLine": 25,
+                  "endLine": 25
                 }
               }
             }
@@ -340,8 +446,8 @@
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes)._proposalType (src/core/base/RousseauProtocol.sol#38) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes)._proposalType](src/core/base/RousseauProtocol.sol#L38) is not in mixedCase\n"
+            "text": "Parameter RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._data (src/core/base/RousseauProtocol.sol#120) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._data](src/core/base/RousseauProtocol.sol#L120) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -351,32 +457,8 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 38,
-                  "endLine": 38
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "2dff6b05c544188e6d195162cabb1c9aac7219c801a9a873ebcd10c0c46c3440"
-          }
-        },
-        {
-          "ruleId": "3-0-naming-convention",
-          "message": {
-            "text": "Parameter RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._data (src/core/base/RousseauProtocol.sol#67) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._data](src/core/base/RousseauProtocol.sol#L67) is not in mixedCase\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/core/base/RousseauProtocol.sol"
-                },
-                "region": {
-                  "startLine": 67,
-                  "endLine": 67
+                  "startLine": 120,
+                  "endLine": 120
                 }
               }
             }
@@ -388,32 +470,8 @@
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes)._value (src/core/base/RousseauProtocol.sol#38) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes)._value](src/core/base/RousseauProtocol.sol#L38) is not in mixedCase\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/core/base/RousseauProtocol.sol"
-                },
-                "region": {
-                  "startLine": 38,
-                  "endLine": 38
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "3c68deffea6e8b41bcdb020a35b81eeaa9b88bbe9e5b31ca92637c7f8450173d"
-          }
-        },
-        {
-          "ruleId": "3-0-naming-convention",
-          "message": {
-            "text": "Parameter RousseauEligibility.canPropose(address,bytes)._address (src/core/modules/RousseauEligibility.sol#19) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauEligibility.canPropose(address,bytes)._address](src/core/modules/RousseauEligibility.sol#L19) is not in mixedCase\n"
+            "text": "Parameter RousseauEligibility.canPropose(address,bytes)._address (src/core/modules/RousseauEligibility.sol#18) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauEligibility.canPropose(address,bytes)._address](src/core/modules/RousseauEligibility.sol#L18) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -423,8 +481,8 @@
                   "uri": "src/core/modules/RousseauEligibility.sol"
                 },
                 "region": {
-                  "startLine": 19,
-                  "endLine": 19
+                  "startLine": 18,
+                  "endLine": 18
                 }
               }
             }
@@ -436,8 +494,8 @@
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauProtocol.executeProposal(uint256)._proposalId (src/core/base/RousseauProtocol.sol#53) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.executeProposal(uint256)._proposalId](src/core/base/RousseauProtocol.sol#L53) is not in mixedCase\n"
+            "text": "Parameter RousseauProtocol.executeProposal(uint256)._proposalId (src/core/base/RousseauProtocol.sol#74) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.executeProposal(uint256)._proposalId](src/core/base/RousseauProtocol.sol#L74) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -447,8 +505,8 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 53,
-                  "endLine": 53
+                  "startLine": 74,
+                  "endLine": 74
                 }
               }
             }
@@ -460,8 +518,8 @@
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._comment (src/core/base/RousseauProtocol.sol#67) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._comment](src/core/base/RousseauProtocol.sol#L67) is not in mixedCase\n"
+            "text": "Parameter RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._comment (src/core/base/RousseauProtocol.sol#119) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._comment](src/core/base/RousseauProtocol.sol#L119) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -471,8 +529,8 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 67,
-                  "endLine": 67
+                  "startLine": 119,
+                  "endLine": 119
                 }
               }
             }
@@ -484,8 +542,128 @@
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauEligibility.setVoted(address,uint256,bytes)._proposalId (src/core/modules/RousseauEligibility.sol#37) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauEligibility.setVoted(address,uint256,bytes)._proposalId](src/core/modules/RousseauEligibility.sol#L37) is not in mixedCase\n"
+            "text": "Parameter RousseauEligibility.setVoted(address,uint256,bytes)._proposalId (src/core/modules/RousseauEligibility.sol#58) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauEligibility.setVoted(address,uint256,bytes)._proposalId](src/core/modules/RousseauEligibility.sol#L58) is not in mixedCase\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/modules/RousseauEligibility.sol"
+                },
+                "region": {
+                  "startLine": 58,
+                  "endLine": 58
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "858223768f73b06558b18e8f176b823eeb7a3a89aed7f95399e1cce0bd6114b5"
+          }
+        },
+        {
+          "ruleId": "3-0-naming-convention",
+          "message": {
+            "text": "Parameter RousseauEligibility.getVoteWeight(address,uint256,bytes)._proposalId (src/core/modules/RousseauEligibility.sol#68) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauEligibility.getVoteWeight(address,uint256,bytes)._proposalId](src/core/modules/RousseauEligibility.sol#L68) is not in mixedCase\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/modules/RousseauEligibility.sol"
+                },
+                "region": {
+                  "startLine": 68,
+                  "endLine": 68
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "a3b482945a0b6cca1197525faf45617f453d35815d3bd3c99503de531e21bd75"
+          }
+        },
+        {
+          "ruleId": "3-0-naming-convention",
+          "message": {
+            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._customData (src/core/base/RousseauProtocol.sol#46) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._customData](src/core/base/RousseauProtocol.sol#L46) is not in mixedCase\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/base/RousseauProtocol.sol"
+                },
+                "region": {
+                  "startLine": 46,
+                  "endLine": 46
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "a3bce2d4767228c9aa1cb23efea312cca1d3183f04d5b1e6db7239ca4a00acb2"
+          }
+        },
+        {
+          "ruleId": "3-0-naming-convention",
+          "message": {
+            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._data (src/core/base/RousseauProtocol.sol#44) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._data](src/core/base/RousseauProtocol.sol#L44) is not in mixedCase\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/base/RousseauProtocol.sol"
+                },
+                "region": {
+                  "startLine": 44,
+                  "endLine": 44
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "ae3547c343762195aee17f1760d128791221c6403ee157ee7715f6b6ba694954"
+          }
+        },
+        {
+          "ruleId": "3-0-naming-convention",
+          "message": {
+            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._elegibilityData (src/core/base/RousseauProtocol.sol#45) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes,bytes)._elegibilityData](src/core/base/RousseauProtocol.sol#L45) is not in mixedCase\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/base/RousseauProtocol.sol"
+                },
+                "region": {
+                  "startLine": 45,
+                  "endLine": 45
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "b729772408c8e0c2905d700c124db07fe90af66f7e376e42d052f049a26bc5c1"
+          }
+        },
+        {
+          "ruleId": "3-0-naming-convention",
+          "message": {
+            "text": "Parameter RousseauEligibility.canVote(address,uint256,bytes)._proposalId (src/core/modules/RousseauEligibility.sol#37) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauEligibility.canVote(address,uint256,bytes)._proposalId](src/core/modules/RousseauEligibility.sol#L37) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -502,62 +680,14 @@
             }
           ],
           "partialFingerprints": {
-            "id": "858223768f73b06558b18e8f176b823eeb7a3a89aed7f95399e1cce0bd6114b5"
-          }
-        },
-        {
-          "ruleId": "3-0-naming-convention",
-          "message": {
-            "text": "Parameter RousseauEligibility.getVoteWeight(address,uint256,bytes)._proposalId (src/core/modules/RousseauEligibility.sol#42) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauEligibility.getVoteWeight(address,uint256,bytes)._proposalId](src/core/modules/RousseauEligibility.sol#L42) is not in mixedCase\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/core/modules/RousseauEligibility.sol"
-                },
-                "region": {
-                  "startLine": 42,
-                  "endLine": 42
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "a3b482945a0b6cca1197525faf45617f453d35815d3bd3c99503de531e21bd75"
-          }
-        },
-        {
-          "ruleId": "3-0-naming-convention",
-          "message": {
-            "text": "Parameter RousseauEligibility.canVote(address,uint256,bytes)._proposalId (src/core/modules/RousseauEligibility.sol#28) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauEligibility.canVote(address,uint256,bytes)._proposalId](src/core/modules/RousseauEligibility.sol#L28) is not in mixedCase\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/core/modules/RousseauEligibility.sol"
-                },
-                "region": {
-                  "startLine": 28,
-                  "endLine": 28
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
             "id": "c6eb732d39ddb82d364e3723bee4529ecca3a038bccb5fc5987832e0c2b00f88"
           }
         },
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._proposalId (src/core/base/RousseauProtocol.sol#67) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._proposalId](src/core/base/RousseauProtocol.sol#L67) is not in mixedCase\n"
+            "text": "Parameter RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._proposalId (src/core/base/RousseauProtocol.sol#117) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._proposalId](src/core/base/RousseauProtocol.sol#L117) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -567,8 +697,8 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 67,
-                  "endLine": 67
+                  "startLine": 117,
+                  "endLine": 117
                 }
               }
             }
@@ -580,32 +710,8 @@
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauProtocol.createProposal(string,uint8,uint256,bytes)._data (src/core/base/RousseauProtocol.sol#38) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.createProposal(string,uint8,uint256,bytes)._data](src/core/base/RousseauProtocol.sol#L38) is not in mixedCase\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/core/base/RousseauProtocol.sol"
-                },
-                "region": {
-                  "startLine": 38,
-                  "endLine": 38
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "cdb0f0d91ba3605d16854daae8c5ef2cf0dc010a56864f44d505bdb504c7f3c7"
-          }
-        },
-        {
-          "ruleId": "3-0-naming-convention",
-          "message": {
-            "text": "Parameter RousseauEligibility.hasVoted(address,uint256,bytes)._proposalId (src/core/modules/RousseauEligibility.sol#33) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauEligibility.hasVoted(address,uint256,bytes)._proposalId](src/core/modules/RousseauEligibility.sol#L33) is not in mixedCase\n"
+            "text": "Parameter RousseauEligibility.hasVoted(address,uint256,bytes)._proposalId (src/core/modules/RousseauEligibility.sol#49) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauEligibility.hasVoted(address,uint256,bytes)._proposalId](src/core/modules/RousseauEligibility.sol#L49) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -615,8 +721,8 @@
                   "uri": "src/core/modules/RousseauEligibility.sol"
                 },
                 "region": {
-                  "startLine": 33,
-                  "endLine": 33
+                  "startLine": 49,
+                  "endLine": 49
                 }
               }
             }
@@ -628,8 +734,8 @@
         {
           "ruleId": "3-0-naming-convention",
           "message": {
-            "text": "Parameter RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._voteType (src/core/base/RousseauProtocol.sol#67) is not in mixedCase\n",
-            "markdown": "Parameter [RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._voteType](src/core/base/RousseauProtocol.sol#L67) is not in mixedCase\n"
+            "text": "Parameter RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._voteType (src/core/base/RousseauProtocol.sol#118) is not in mixedCase\n",
+            "markdown": "Parameter [RousseauProtocol.voteProposal(uint256,uint8,string,bytes)._voteType](src/core/base/RousseauProtocol.sol#L118) is not in mixedCase\n"
           },
           "level": "warning",
           "locations": [
@@ -639,134 +745,14 @@
                   "uri": "src/core/base/RousseauProtocol.sol"
                 },
                 "region": {
-                  "startLine": 67,
-                  "endLine": 67
+                  "startLine": 118,
+                  "endLine": 118
                 }
               }
             }
           ],
           "partialFingerprints": {
             "id": "f4db3d2a68b2f2961ea9e652cd7244f1299b8862ebe7a3e3f0c264c63a268cd8"
-          }
-        },
-        {
-          "ruleId": "3-0-unused-state",
-          "message": {
-            "text": "RousseauRepository.timelocks (src/core/modules/RousseauRepository.sol#10) is never used in RousseauRepository (src/core/modules/RousseauRepository.sol#8-37)\n",
-            "markdown": "[RousseauRepository.timelocks](src/core/modules/RousseauRepository.sol#L10) is never used in [RousseauRepository](src/core/modules/RousseauRepository.sol#L8-L37)\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "src/core/modules/RousseauRepository.sol"
-                },
-                "region": {
-                  "startLine": 10,
-                  "endLine": 10
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "165ca9eed8718c4d3340b34495b0cba75a973eed9cfb8a50bbbdbd4f0edd32f6"
-          }
-        },
-        {
-          "ruleId": "3-0-unused-state",
-          "message": {
-            "text": "AvaraNFTTest.user2 (test/mocks/AvaraNFT.t.sol#10) is never used in AvaraNFTTest (test/mocks/AvaraNFT.t.sol#7-41)\n",
-            "markdown": "[AvaraNFTTest.user2](test/mocks/AvaraNFT.t.sol#L10) is never used in [AvaraNFTTest](test/mocks/AvaraNFT.t.sol#L7-L41)\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "test/mocks/AvaraNFT.t.sol"
-                },
-                "region": {
-                  "startLine": 10,
-                  "endLine": 10
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "d6b82f3dead8ff373e1a9640698f83fcddf6c8025ee4aa5e5d718e441daf0bdd"
-          }
-        },
-        {
-          "ruleId": "4-0-constable-states",
-          "message": {
-            "text": "AvaraNFTTest.deployer (test/mocks/AvaraNFT.t.sol#8) should be constant\n",
-            "markdown": "[AvaraNFTTest.deployer](test/mocks/AvaraNFT.t.sol#L8) should be constant\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "test/mocks/AvaraNFT.t.sol"
-                },
-                "region": {
-                  "startLine": 8,
-                  "endLine": 8
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "58f8df62c622a04f1e31eb50603b09f2dba9e0574099a2cc75b7ecf96a33336a"
-          }
-        },
-        {
-          "ruleId": "4-0-constable-states",
-          "message": {
-            "text": "AvaraNFTTest.user1 (test/mocks/AvaraNFT.t.sol#9) should be constant\n",
-            "markdown": "[AvaraNFTTest.user1](test/mocks/AvaraNFT.t.sol#L9) should be constant\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "test/mocks/AvaraNFT.t.sol"
-                },
-                "region": {
-                  "startLine": 9,
-                  "endLine": 9
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "a9762a726a432f36a5e81999e3b73c2a898f605c8f93843f8d9d7ef925e977f5"
-          }
-        },
-        {
-          "ruleId": "4-0-constable-states",
-          "message": {
-            "text": "AvaraNFTTest.user2 (test/mocks/AvaraNFT.t.sol#10) should be constant\n",
-            "markdown": "[AvaraNFTTest.user2](test/mocks/AvaraNFT.t.sol#L10) should be constant\n"
-          },
-          "level": "warning",
-          "locations": [
-            {
-              "physicalLocation": {
-                "artifactLocation": {
-                  "uri": "test/mocks/AvaraNFT.t.sol"
-                },
-                "region": {
-                  "startLine": 10,
-                  "endLine": 10
-                }
-              }
-            }
-          ],
-          "partialFingerprints": {
-            "id": "d9eaa4c10043dbe8e2e4fba284eedbdaa2aa91a2936dfdcaaeb92c5222428d53"
           }
         }
       ]

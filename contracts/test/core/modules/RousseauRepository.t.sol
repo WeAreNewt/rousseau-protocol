@@ -26,6 +26,11 @@ contract RousseauRepositoryTests is Test {
         assertEq(deployer, repository.owner());
     }
 
+    function testInitializeWithZeroAddress() public {
+        vm.expectRevert(abi.encodeWithSignature("ZeroAddressNotAllowed()"));
+        repository.initialize(address(0));
+    }
+
     function testCanNotCallAddValueIfNotInitialized() public {
         vm.expectRevert(abi.encodeWithSignature("NotInitialized()"));
         repository.addValue(
