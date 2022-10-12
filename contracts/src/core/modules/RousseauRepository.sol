@@ -44,7 +44,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         uint256 date,
         bytes calldata customData
     ) external isInitialized isProtocol {
-        timelocks[proposalId] = 0;//abi.decode(customData, (uint256));
+        timelocks[proposalId] = dynamicBytesToUint(customData);
         activeValues.push(proposalId);
     }
 
@@ -56,7 +56,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         bytes calldata customData
     ) external isInitialized isProtocol {
         if (timelocks[data] > block.timestamp) revert Timelocked();
-        timelocks[proposalId] = 0;//abi.decode(customData, (uint256));
+        timelocks[proposalId] = dynamicBytesToUint(customData);
         unchecked {
             for (uint256 i = 0; i < activeValues.length; i++) {
                 if (activeValues[i] == proposalId) {
@@ -76,7 +76,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         bytes calldata customData
     ) external isInitialized isProtocol {
         if (timelocks[data] > block.timestamp) revert Timelocked();
-        timelocks[proposalId] = 0;//abi.decode(customData, (uint256));
+        timelocks[proposalId] = dynamicBytesToUint(customData);
         unchecked {
             for (uint256 i = 0; i < activeValues.length; i++) {
                 if (activeValues[i] == proposalId) {
@@ -122,4 +122,16 @@ contract RousseauRepository is IRousseauRepository, Ownable {
             msg.sender
         );
     }
-}
+
+    function dynamicBytesToUint(bytes calldata input) internal returns (uint256) {
+        bytes memory b = abi.encode(input);
+        uint256 result = 0;
+        for (uint256 i = 0; i < b.length; i++) {
+            uint256 c = uint256(uint8(b[i]));
+            if (c >= 48 && c <= 57) {
+                result = result * 10 + (c - 48);
+            }
+        }
+        return result;
+    }
+ }
