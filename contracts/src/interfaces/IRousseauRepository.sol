@@ -6,21 +6,24 @@ interface IRousseauRepository {
         uint256 proposalId,
         string calldata value,
         uint256 data,
-        uint256 date
+        uint256 date,
+        bytes calldata customData
     ) external;
 
     function removeValue(
         uint256 proposalId,
         string calldata value,
         uint256 data,
-        uint256 date
+        uint256 date,
+        bytes calldata customData
     ) external;
 
     function replaceValue(
         uint256 proposalId,
         string calldata value,
         uint256 data,
-        uint256 date
+        uint256 date,
+        bytes calldata customData
     ) external;
 
     function canRemove(

@@ -14,6 +14,8 @@ contract RousseauRepository is IRousseauRepository, Ownable {
     mapping(uint256 => uint256) private timelocks;
     mapping(uint256 => DataTypes.Comment) private comments;
 
+    uint256[] activeValues;
+
     error Timelocked();
     error NotInitialized();
     error NotProtocol();
@@ -39,28 +41,53 @@ contract RousseauRepository is IRousseauRepository, Ownable {
         uint256 proposalId,
         string calldata value,
         uint256 data,
-        uint256 date
+        uint256 date,
+        bytes calldata customData
     ) external isInitialized isProtocol {
-        if (timelocks[proposalId] > block.timestamp) revert Timelocked();
-        
+        timelocks[proposalId] = 0;//abi.decode(customData, (uint256));
+        activeValues.push(proposalId);
     }
 
     function removeValue(
         uint256 proposalId,
         string calldata value,
         uint256 data,
-        uint256 date
+        uint256 date,
+        bytes calldata customData
     ) external isInitialized isProtocol {
+        if (timelocks[data] > block.timestamp) revert Timelocked();
+        timelocks[proposalId] = 0;//abi.decode(customData, (uint256));
+        unchecked {
+            for (uint256 i = 0; i < activeValues.length; i++) {
+                if (activeValues[i] == proposalId) {
+                    activeValues[i] = activeValues[activeValues.length - 1];
+                    activeValues.pop();
+                    break;
+                }
+            }
+        }
     }
 
     function replaceValue(
         uint256 proposalId,
         string calldata value,
         uint256 data,
-        uint256 date
+        uint256 date,
+        bytes calldata customData
     ) external isInitialized isProtocol {
+        if (timelocks[data] > block.timestamp) revert Timelocked();
+        timelocks[proposalId] = 0;//abi.decode(customData, (uint256));
+        unchecked {
+            for (uint256 i = 0; i < activeValues.length; i++) {
+                if (activeValues[i] == proposalId) {
+                    activeValues[i] = proposalId;
+                    break;
+                }
+            }
+        }
     }
 
+    // 0 means no timelock, 1 means timelock is forever, otherwise the number is the block.timestamp when the timelock ends
     function canRemove(
         uint256 proposalId,
         uint256 kind,
@@ -72,6 +99,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
             timelocks[proposalId] != 1;
     }
 
+    // 0 means no timelock, 1 means timelock is forever, otherwise the number is the block.timestamp when the timelock ends
     function canReplace(
         uint256 proposalId,
         uint256 kind,

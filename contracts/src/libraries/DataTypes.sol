@@ -27,6 +27,7 @@ library DataTypes {
     ProposalType kind;
     uint256 data;
     uint256 start;
+    bytes customData;
   }
 
   struct Comment {

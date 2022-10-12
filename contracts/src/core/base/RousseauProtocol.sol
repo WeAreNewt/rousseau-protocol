@@ -42,7 +42,8 @@ contract RousseauProtocol {
         string calldata _value,
         uint8 _proposalType,
         uint256 _data,
-        bytes calldata _elegibilityData
+        bytes calldata _elegibilityData,
+        bytes calldata _customData
     ) external {
         if (bytes(_value).length == 0) revert ValueMustNotBeNull();
         if (_proposalType > 2) revert InvalidProposalType();
@@ -52,6 +53,7 @@ contract RousseauProtocol {
         newProposal.start = block.timestamp;
         newProposal.kind = DataTypes.ProposalType(_proposalType);
         newProposal.data = _data;
+        newProposal.customData = _customData;
 
         if (!(rousseauEligibility.canPropose(msg.sender, _elegibilityData)))
             revert NotElegible();
@@ -92,21 +94,24 @@ contract RousseauProtocol {
                 _proposalId,
                 proposal.value,
                 proposal.data,
-                block.timestamp
+                block.timestamp,
+                proposal.customData
             );
         } else if (proposal.kind == DataTypes.ProposalType.REMOVE) {
             rousseauRepository.removeValue(
                 _proposalId,
                 proposal.value,
                 proposal.data,
-                block.timestamp
+                block.timestamp,
+                proposal.customData
             );
         } else {
             rousseauRepository.replaceValue(
                 _proposalId,
                 proposal.value,
                 proposal.data,
-                block.timestamp
+                block.timestamp,
+                proposal.customData
             );
         }
     }
