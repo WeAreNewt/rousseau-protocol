@@ -2,10 +2,10 @@
 pragma solidity ^0.8.13;
 
 interface IRousseauRepository {
-  function addValue(bytes calldata data) external;
-  function removeValue(bytes calldata data) external;
-  function replaceValue(bytes calldata data) external;
-  function canRemove(bytes calldata data) external returns(bool);
-  function canReplace(bytes calldata data) external returns(bool);
-  function addComment(bytes calldata data) external;
+  function addValue(uint256 proposalId, string calldata value, uint256 data, uint256 date) external;
+  function removeValue(uint256 proposalId, string calldata value, uint256 data, uint256 date) external;
+  function replaceValue(uint256 proposalId, string calldata value, uint256 data, uint256 date) external;
+  function canRemove(uint256 proposalId, uint256 kind, uint256 data, uint256 start) external returns(bool);
+  function canReplace(uint256 proposalId, uint256 kind, uint256 data, uint256 start) external returns(bool);
+  function addComment(uint256 proposalId, string calldata value) external;
 }
