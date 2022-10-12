@@ -37,7 +37,6 @@ contract RousseauProtocol {
 
   function createProposal(string calldata _value, uint8 _proposalType, uint256 _data, bytes calldata _elegibilityData) external {
     if(bytes(_value).length == 0 ) revert ValueMustNotBeNull();
-    if(!(rousseauEligibility.canPropose(msg.sender, _elegibilityData))) revert NotElegible();
     if(_proposalType > 2) revert InvalidProposalType();
 
 
@@ -47,6 +46,7 @@ contract RousseauProtocol {
     newProposal.kind = DataTypes.ProposalType(_proposalType);
     newProposal.data = _data;
 
+    if(!(rousseauEligibility.canPropose(msg.sender, _elegibilityData))) revert NotElegible();
     if(!rousseauRepository.canRemove(_counter, _proposalType, _data, block.timestamp) && _proposalType == 1 || !rousseauRepository.canReplace(_counter, _proposalType, _data, block.timestamp) && _proposalType == 2) revert RepositoryError();
   }
 
@@ -65,10 +65,9 @@ contract RousseauProtocol {
   }
 
   function voteProposal(uint256 _proposalId, uint8 _voteType, string calldata _comment, bytes calldata _data) external {
-    if(!rousseauEligibility.canVote(msg.sender, _proposalId, _data)) revert NotElegible();
-
     DataTypes.Proposal storage proposal = proposals[_proposalId];
 
+    if(!rousseauEligibility.canVote(msg.sender, _proposalId, _data)) revert NotElegible();
     if(block.timestamp < proposal.start + rousseauQuorum.getVoteDelay()) revert VoteNotStarted();
     if(block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()) revert VoteAlreadyFinished();
 

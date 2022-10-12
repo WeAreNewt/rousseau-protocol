@@ -7,8 +7,10 @@ import "../../libraries/DataTypes.sol";
 
 contract RousseauRepository is IRousseauRepository {
   
-  function addValue(uint256 proposalId, string calldata value, uint256 data, uint256 date) external { //TODO: Only RousseauProtocol
+  mapping(uint256 => uint256) timelocks;
 
+  function addValue(uint256 proposalId, string calldata value, uint256 data, uint256 date) external { //TODO: Only RousseauProtocol
+  
   }
 
   function removeValue(uint256 proposalId, string calldata value, uint256 data, uint256 date) external { //TODO:  Only RousseauProtocol
