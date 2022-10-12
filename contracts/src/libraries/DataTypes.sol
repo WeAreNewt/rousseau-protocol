@@ -27,6 +27,13 @@ library DataTypes {
     ProposalType kind;
     uint256 data;
     uint256 start;
+    bytes customData;
+  }
+
+  struct Comment {
+    string value;
+    uint256 date;
+    address author;
   }
 
 }

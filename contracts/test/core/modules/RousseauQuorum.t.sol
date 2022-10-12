@@ -6,11 +6,11 @@ import "../../../src/core/modules/RousseauQuorum.sol";
 import "../../../src/mocks/AvaraNFT.sol";
 
 contract RousseauQuorumTests is Test {
-
     RousseauQuorum quorum;
     AvaraNFT nft;
+
     function setUp() public {
-        nft = new AvaraNFT('AVARA NFT', 'AVR');
+        nft = new AvaraNFT("AVARA NFT", "AVR");
         quorum = new RousseauQuorum(100, 101, address(nft), 50);
     }
 
@@ -33,5 +33,4 @@ contract RousseauQuorumTests is Test {
     }
 
     // TODO: Deeply test hasquorum function
-    
 }

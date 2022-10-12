@@ -32,10 +32,11 @@ contract AvaraNFTTest is Test {
         nftCollection.mint(user1);
         nftCollection.setIsActive(1, true);
         assertEq(nftCollection.isActive(1), true);
-    }  
-     function testIsActiveIfNotOwner() public {
+    }
+
+    function testIsActiveIfNotOwner() public {
         nftCollection.mint(user1);
         vm.expectRevert("Ownable: caller is not the owner");
         nftCollection.setIsActive(1, true);
-    }    
+    }
 }

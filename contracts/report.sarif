@@ -196,8 +196,8 @@
         {
           "ruleId": "2-1-timestamp",
           "message": {
-            "text": "RousseauProtocol.voteProposal(uint256,uint8,string,bytes) (src/core/base/RousseauProtocol.sol#67-78) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- block.timestamp < proposal.start + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#72)\n\t- block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#73)\n",
-            "markdown": "[RousseauProtocol.voteProposal(uint256,uint8,string,bytes)](src/core/base/RousseauProtocol.sol#L67-L78) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [block.timestamp < proposal.start + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L72)\n\t- [block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L73)\n"
+            "text": "RousseauProtocol.voteProposal(uint256,uint8,string,bytes) (src/core/base/RousseauProtocol.sol#67-77) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- block.timestamp < proposal.start + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#71)\n\t- block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay() (src/core/base/RousseauProtocol.sol#72)\n",
+            "markdown": "[RousseauProtocol.voteProposal(uint256,uint8,string,bytes)](src/core/base/RousseauProtocol.sol#L67-L77) uses timestamp for comparisons\n\tDangerous comparisons:\n\t- [block.timestamp < proposal.start + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L71)\n\t- [block.timestamp > proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()](src/core/base/RousseauProtocol.sol#L72)\n"
           },
           "level": "warning",
           "locations": [
@@ -208,13 +208,13 @@
                 },
                 "region": {
                   "startLine": 67,
-                  "endLine": 78
+                  "endLine": 77
                 }
               }
             }
           ],
           "partialFingerprints": {
-            "id": "57d8da60817efab3b406755b566263f2e92fc281958f7131d3d237369377abab"
+            "id": "10bb232c01eb97cbaba204f9e5e3454f80d6776165c6174c0e97e563e6c1afba"
           }
         },
         {
@@ -647,6 +647,30 @@
           ],
           "partialFingerprints": {
             "id": "f4db3d2a68b2f2961ea9e652cd7244f1299b8862ebe7a3e3f0c264c63a268cd8"
+          }
+        },
+        {
+          "ruleId": "3-0-unused-state",
+          "message": {
+            "text": "RousseauRepository.timelocks (src/core/modules/RousseauRepository.sol#10) is never used in RousseauRepository (src/core/modules/RousseauRepository.sol#8-37)\n",
+            "markdown": "[RousseauRepository.timelocks](src/core/modules/RousseauRepository.sol#L10) is never used in [RousseauRepository](src/core/modules/RousseauRepository.sol#L8-L37)\n"
+          },
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "src/core/modules/RousseauRepository.sol"
+                },
+                "region": {
+                  "startLine": 10,
+                  "endLine": 10
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "id": "165ca9eed8718c4d3340b34495b0cba75a973eed9cfb8a50bbbdbd4f0edd32f6"
           }
         },
         {
