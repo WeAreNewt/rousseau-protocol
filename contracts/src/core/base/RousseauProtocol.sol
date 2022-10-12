@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
-pragma solidity ^0.8.13;
+pragma solidity 0.8.16;
 
 import "../../interfaces/IRousseauEligibility.sol";
 import "../../interfaces/IRousseauQuorum.sol";
@@ -19,6 +19,7 @@ contract RousseauProtocol {
   error VoteStillGoing();
   error VoteAlreadyFinished();
   error RepositoryError();
+  error InvalidProposalType();
 
   mapping(uint256 => DataTypes.Proposal) public proposals;
 
@@ -37,13 +38,16 @@ contract RousseauProtocol {
   function createProposal(string calldata _value, uint8 _proposalType, uint256 _data, bytes calldata _elegibilityData) external {
     if(bytes(_value).length == 0 ) revert ValueMustNotBeNull();
     if(!(rousseauEligibility.canPropose(msg.sender, _elegibilityData))) revert NotElegible();
-    if(!rousseauRepository.canRemove(_data) && _proposalType == 1 || !rousseauRepository.canReplace(_data) && _proposalType == 2) revert RepositoryError();
+    if(_proposalType > 2) revert InvalidProposalType();
+
 
     DataTypes.Proposal storage newProposal = proposals[++_counter];
     newProposal.value = _value;
     newProposal.start = block.timestamp;
     newProposal.kind = DataTypes.ProposalType(_proposalType);
     newProposal.data = _data;
+
+    if(!rousseauRepository.canRemove(_counter, _proposalType, _data, block.timestamp) && _proposalType == 1 || !rousseauRepository.canReplace(_counter, _proposalType, _data, block.timestamp) && _proposalType == 2) revert RepositoryError();
   }
 
   function executeProposal(uint256 _proposalId) external {
@@ -52,11 +56,11 @@ contract RousseauProtocol {
     if(block.timestamp < proposal.start + rousseauQuorum.getVotePeriod() + rousseauQuorum.getVoteDelay()) revert VoteStillGoing();
 
     if(proposal.kind == DataTypes.ProposalType.ADD) {
-      rousseauRepository.addValue(proposal.value);
+      rousseauRepository.addValue(_proposalId, proposal.value, proposal.data, block.timestamp);
     } else if(proposal.kind == DataTypes.ProposalType.REMOVE) {
-      rousseauRepository.removeValue(proposal.data);
+      rousseauRepository.removeValue(_proposalId, proposal.value, proposal.data, block.timestamp);
     } else {
-      rousseauRepository.replaceValue(proposal.data, proposal.value);
+      rousseauRepository.replaceValue(_proposalId, proposal.value, proposal.data, block.timestamp);
     }
   }
 

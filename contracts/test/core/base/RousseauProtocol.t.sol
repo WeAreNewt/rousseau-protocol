@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
-pragma solidity ^0.8.13;
+pragma solidity 0.8.16;
 
 import "forge-std/Test.sol";
 import "../../../src/core/modules/RousseauEligibility.sol";
@@ -59,16 +59,22 @@ contract RousseauProtocolTests is Test {
         protocol.createProposal('test', 1, 0, abi.encode(''));
     }
 
+    function testCreateProposalWithInvalidType() public {
+        vm.prank(users[0]);
+        vm.expectRevert(abi.encodeWithSignature('InvalidProposalType()'));
+        protocol.createProposal('test', 3, 1, abi.encode(''));
+    }
+
     function testCreateRemoveProposalWithRepositoryLock() public {
         vm.prank(users[0]);
-        //vm.expectRevert(abi.encodeWithSignature('RepositoryError()'));
+        //TODO: Revisit once we have the repository done: vm.expectRevert(abi.encodeWithSignature('RepositoryError()'));
         protocol.createProposal('test', 1, 1, abi.encode(''));
    
     }
 
     function testCreateReplaceProposalWithRepositoryLock() public {
         vm.prank(users[0]);
-        //vm.expectRevert(abi.encodeWithSignature('RepositoryError()'));
+        //TODO: Revisit once we have the repository done: vm.expectRevert(abi.encodeWithSignature('RepositoryError()'));
         protocol.createProposal('test', 2, 1, abi.encode(''));
     }
 
@@ -86,6 +92,7 @@ contract RousseauProtocolTests is Test {
 
     function testVoteProposalIfCanVote() public {
         setupTestProposal();
+        
         vm.warp(block.timestamp + quorum.getVoteDelay());
         vm.prank(users[1]);
         protocol.voteProposal(0, 1, 'This is a comment', abi.encode(1));
@@ -94,6 +101,7 @@ contract RousseauProtocolTests is Test {
 
     function testVoteProposalIfCantVote() public {
         setupTestProposal();
+
         vm.warp(block.timestamp + quorum.getVoteDelay());
         vm.prank(users[3]);
         vm.expectRevert(abi.encodeWithSignature('NotElegible()'));
