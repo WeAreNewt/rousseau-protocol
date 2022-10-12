@@ -29,4 +29,10 @@ library DataTypes {
     uint256 start;
   }
 
+  struct Comment {
+    string value;
+    uint256 date;
+    address author;
+  }
+
 }

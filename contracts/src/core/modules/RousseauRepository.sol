@@ -2,17 +2,37 @@
 pragma solidity 0.8.16;
 
 import "../../interfaces/IRousseauRepository.sol";
+import "../base/RousseauProtocol.sol";
 import "../../libraries/DataTypes.sol";
+import "@openzeppelin/access/Ownable.sol";
 
-contract RousseauRepository is IRousseauRepository {
+contract RousseauRepository is IRousseauRepository, Ownable {
+
+    RousseauProtocol protocol;
+
+    bool initialized = false;
+
     mapping(uint256 => uint256) private timelocks;
+    mapping(uint256 => DataTypes.Comment) private comments;
+
+    error Timelocked();
+    error NotInitialized();
+
+    modifier isInitialized() {
+        if (!initialized) revert NotInitialized();
+        _;
+    }
+
+    constructor() {
+        initialized = true;
+    }
 
     function addValue(
         uint256 proposalId,
         string calldata value,
         uint256 data,
         uint256 date
-    ) external {
+    ) external isInitialized {;
         //TODO: Only RousseauProtocol
     }
 
@@ -21,7 +41,7 @@ contract RousseauRepository is IRousseauRepository {
         string calldata value,
         uint256 data,
         uint256 date
-    ) external {
+    ) external isInitialized {
         //TODO:  Only RousseauProtocol
     }
 
@@ -30,7 +50,7 @@ contract RousseauRepository is IRousseauRepository {
         string calldata value,
         uint256 data,
         uint256 date
-    ) external {
+    ) external isInitialized {
         //TODO: Only RousseauProtocol
     }
 
@@ -40,19 +60,30 @@ contract RousseauRepository is IRousseauRepository {
         uint256 kind,
         uint256 data,
         uint256 start
-    ) external returns (bool) {
-        return true;
+    ) external isInitialized returns (bool) {
+        return
+            timelocks[proposalId] < block.timestamp && timelocks[proposalId] > 0;
     }
 
-    // TODO: check if timelock is there
     function canReplace(
         uint256 proposalId,
         uint256 kind,
         uint256 data,
         uint256 start
-    ) external returns (bool) {
-        return true;
+    ) external isInitialized returns (bool) {
+        return
+            timelocks[proposalId] < block.timestamp && timelocks[proposalId] > 0;
     }
 
-    function addComment(uint256 proposalId, string calldata value) external {}
+    function addComment(uint256 proposalId, string calldata comment)
+        external
+        isInitialized
+    {
+        //TODO: Only RousseauProtocol
+        comments[proposalId] = DataTypes.Comment(
+            comment,
+            block.timestamp,
+            msg.sender
+        );
+    }
 }
