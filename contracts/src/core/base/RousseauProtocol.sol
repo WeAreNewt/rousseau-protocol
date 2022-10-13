@@ -29,9 +29,9 @@ contract RousseauProtocol {
     IRousseauRepository rousseauRepository;
 
     /// @notice Constructor of the rousseau protocol
-    /// @param _rouseauEligibility Address of the rousseau eligibility module
-    /// @param _rouseauQuorum Address of the rousseau quorum module
-    /// @param _rouseauRepository Address of the rousseau repository module
+    /// @param _rousseauEligibility Address of the rousseau eligibility module
+    /// @param _rousseauQuorum Address of the rousseau quorum module
+    /// @param _rousseauRepository Address of the rousseau repository module
     constructor(
         address _rousseauEligibility,
         address _rousseauQuorum,
@@ -52,7 +52,7 @@ contract RousseauProtocol {
         string calldata _value,
         uint8 _proposalType,
         uint256 _data,
-        bytes calldata _elegibilityData,
+        bytes calldata _eligibilityData,
         bytes calldata _customData
     ) external {
         if (bytes(_value).length == 0) revert ValueMustNotBeNull();
@@ -65,7 +65,7 @@ contract RousseauProtocol {
         newProposal.data = _data;
         newProposal.customData = _customData;
 
-        if (!(rousseauEligibility.canPropose(msg.sender, _elegibilityData)))
+        if (!(rousseauEligibility.canPropose(msg.sender, _eligibilityData)))
             revert NotElegible();
         if (
             (!rousseauRepository.canRemove(_counter, _data) &&
