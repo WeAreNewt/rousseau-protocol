@@ -5,6 +5,10 @@ import "../../interfaces/IRousseauQuorum.sol";
 import "../../libraries/DataTypes.sol";
 import "../../mocks/AvaraNFT.sol";
 
+
+/// @title RousseauQuorum
+/// @author Newt team
+/// @notice This contract is used to check if a quorum has been reached and get vote information
 contract RousseauQuorum is IRousseauQuorum {
     error NotElegible();
 
