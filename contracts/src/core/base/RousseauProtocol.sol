@@ -28,6 +28,10 @@ contract RousseauProtocol {
     IRousseauQuorum rousseauQuorum;
     IRousseauRepository rousseauRepository;
 
+    /// @notice Constructor of the rousseau protocol
+    /// @param _rouseauEligibility Address of the rousseau eligibility module
+    /// @param _rouseauQuorum Address of the rousseau quorum module
+    /// @param _rouseauRepository Address of the rousseau repository module
     constructor(
         address _rousseauEligibility,
         address _rousseauQuorum,
@@ -38,6 +42,12 @@ contract RousseauProtocol {
         rousseauRepository = IRousseauRepository(_rousseauRepository);
     }
 
+    /// @notice Creates a new proposal
+    /// @param _value Value of the proposal
+    /// @param _proposalType Type of the proposal
+    /// @param _data Number of the proposal that you are targeting to replace or remove
+    /// @param _eligibilityData Custom data for the eligibility module
+    /// @param _customData Custom data of the proposal
     function createProposal(
         string calldata _value,
         uint8 _proposalType,
@@ -58,13 +68,15 @@ contract RousseauProtocol {
         if (!(rousseauEligibility.canPropose(msg.sender, _elegibilityData)))
             revert NotElegible();
         if (
-            (!rousseauRepository.canRemove(_counter, _data, block.timestamp) &&
+            (!rousseauRepository.canRemove(_counter, _data) &&
                 _proposalType == 1) ||
-            (!rousseauRepository.canReplace(_counter, _data, block.timestamp) &&
+            (!rousseauRepository.canReplace(_counter, _data) &&
                 _proposalType == 2)
         ) revert RepositoryError();
     }
 
+    /// @notice Executes a proposal
+    /// @param _proposalId Id of the proposal
     function executeProposal(uint256 _proposalId) external {
         DataTypes.Proposal storage proposal = proposals[_proposalId];
         if (
@@ -85,7 +97,6 @@ contract RousseauProtocol {
             rousseauRepository.addValue(
                 _proposalId,
                 proposal.value,
-                proposal.data,
                 block.timestamp,
                 proposal.customData
             );
@@ -107,6 +118,11 @@ contract RousseauProtocol {
         }
     }
 
+    /// @notice Votes on a proposal
+    /// @param _proposalId Id of the proposal
+    /// @param _voteType Type of the vote
+    /// @param _comment Comment of the vote
+    /// @param _data Custom data of the vote for the eligibility module
     function voteProposal(
         uint256 _proposalId,
         uint8 _voteType,

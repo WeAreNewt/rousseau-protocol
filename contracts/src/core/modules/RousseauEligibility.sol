@@ -68,7 +68,6 @@ contract RousseauEligibility is IRousseauEligibility {
         uint256 _proposalId,
         bytes calldata data
     ) external view returns (uint256) {
-        // TODO: Discuss ovte weight in our specific usecase
         uint256 tokenId = abi.decode(data, (uint256));
         return hasVotedOnProposal[_proposalId][tokenId] ? 0 : 1;
     }

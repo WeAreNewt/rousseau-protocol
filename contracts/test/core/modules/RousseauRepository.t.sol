@@ -36,7 +36,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            0,
             block.timestamp,
             abi.encode("0")
         );
@@ -75,7 +74,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("0")
         );
@@ -89,7 +87,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode(block.timestamp)
         );
@@ -104,7 +101,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("1")
         );
@@ -120,7 +116,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("2")
         );
@@ -135,7 +130,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("1")
         );
@@ -157,7 +151,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("10")
         );
@@ -178,7 +171,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("0")
         );
@@ -200,11 +192,10 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("1")
         );
-        assertEq(repository.canRemove(1, 0, block.timestamp), false);
+        assertEq(repository.canRemove(1, 0), false);
     }
 
     function testCanRemoveWithTimelock() public {
@@ -214,11 +205,10 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("10")
         );
-        assertEq(repository.canRemove(1, 0, block.timestamp), false);
+        assertEq(repository.canRemove(1, 0), false);
     }
 
     function testCanReplaceWithTimelock() public {
@@ -228,11 +218,10 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("10")
         );
-        assertEq(repository.canReplace(1, 0, block.timestamp), false);
+        assertEq(repository.canReplace(1, 0), false);
     }
 
     function testCanReplaceWithPermanentTimelock() public {
@@ -242,11 +231,10 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("1")
         );
-        assertEq(repository.canReplace(1, 0, block.timestamp), false);
+        assertEq(repository.canReplace(1, 0), false);
     }
 
     function testCanRemoveWithoutTimelock() public {
@@ -256,11 +244,10 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("0")
         );
-        assertEq(repository.canRemove(1, 0, block.timestamp), true);
+        assertEq(repository.canRemove(1, 0), true);
     }
 
     function testCanReplaceWithoutTimelock() public {
@@ -270,11 +257,10 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("0")
         );
-        assertEq(repository.canReplace(1, 0, block.timestamp), true);
+        assertEq(repository.canReplace(1, 0), true);
     }
 
     function testAddComment() public {
@@ -284,7 +270,6 @@ contract RousseauRepositoryTests is Test {
         repository.addValue(
             0,
             "test value",
-            1,
             block.timestamp,
             abi.encode("0")
         );

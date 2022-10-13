@@ -42,7 +42,6 @@ contract RousseauRepository is IRousseauRepository, Ownable {
     function addValue(
         uint256 proposalId,
         string calldata value,
-        uint256 data,
         uint256 date,
         bytes calldata customData
     ) external isInitialized isProtocol {
@@ -93,8 +92,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
     // 0 means no timelock, 1 means timelock is forever, otherwise the number is the block.timestamp when the timelock ends
     function canRemove(
         uint256 proposalId,
-        uint256 data,
-        uint256 start
+        uint256 data
     ) external isInitialized isProtocol returns (bool) {
         return timelocks[data] < block.timestamp && timelocks[data] != 1;
     }
@@ -102,8 +100,7 @@ contract RousseauRepository is IRousseauRepository, Ownable {
     // 0 means no timelock, 1 means timelock is forever, otherwise the number is the block.timestamp when the timelock ends
     function canReplace(
         uint256 proposalId,
-        uint256 data,
-        uint256 start
+        uint256 data
     ) external isInitialized isProtocol returns (bool) {
         return timelocks[data] < block.timestamp && timelocks[data] != 1;
     }
