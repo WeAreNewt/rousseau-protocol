@@ -6,6 +6,9 @@ import "../../interfaces/IRousseauQuorum.sol";
 import "../../interfaces/IRousseauRepository.sol";
 import "../../libraries/DataTypes.sol";
 
+/// @title RousseauProtocol
+/// @author Newt team
+/// @notice This contract is used to create proposals of values and vote on them
 contract RousseauProtocol {
     event ProposalCreated();
     event ProposalUpdated();
