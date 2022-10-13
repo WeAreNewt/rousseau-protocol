@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity 0.8.16;
 
+/// @title IRousseauQuorum
+/// @author Newt team
+/// @notice This interface is used to be inherited to check if a quorum has been reached and get vote information
 interface IRousseauQuorum {
     /// @notice Checks if the quorum has been reached
     /// @param yes The number of yes votes

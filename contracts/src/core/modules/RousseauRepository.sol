@@ -6,6 +6,10 @@ import "../base/RousseauProtocol.sol";
 import "../../libraries/DataTypes.sol";
 import "@openzeppelin/access/Ownable.sol";
 
+
+/// @title RousseauRepository
+/// @author Newt team
+/// @notice This contract is used to store values and comments
 contract RousseauRepository is IRousseauRepository, Ownable {
     address private _protocol;
 

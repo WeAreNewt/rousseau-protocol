@@ -6,6 +6,9 @@ import "../../../src/mocks/AvaraNFT.sol";
 import "../../libraries/DataTypes.sol";
 import "@openzeppelin/token/ERC721/IERC721.sol";
 
+/// @title RousseauEligibility
+/// @author Newt team
+/// @notice This contract is used to check if a user is elegible to do actions in the rousseau protocol
 contract RousseauEligibility is IRousseauEligibility {
     mapping(uint256 => mapping(uint256 => bool)) public hasVotedOnProposal;
 

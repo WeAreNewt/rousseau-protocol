@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity 0.8.16;
 
+
+/// @title IRousseauRepository
+/// @author Newt team
+/// @notice This interface is used to be inherited to store values and comments
 interface IRousseauRepository {
     /// @notice Adds a new value to the repository
     /// @param proposalId Proposal ID to add

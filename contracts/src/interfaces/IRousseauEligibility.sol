@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: BSD-3-Clause
 pragma solidity 0.8.16;
 
+/// @title IRousseauEligibility
+/// @author Newt team
+/// @notice This interface is used to be inherited to check the rights that a user has on the rousseau protocol
 interface IRousseauEligibility {
     /// @notice Checks if the address can vote on a proposal
     /// @param _address Address to check
