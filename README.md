@@ -21,4 +21,4 @@ IRousseauQuorum determines the rules for governance and what threshold needs to 
 IRousseauRepository determines where the values will be stored -- whether on-chain (in the contract or on Lens Protocol) or stored off-chain (IPFS, Arweave, etc).
 
 ### Front End
-Rousseau Protocol will have a voting frontend to allow for users to determine if their eligible to vote with a specific organization, vote for values on-chain, and propose revisions, additions, or removal of values.
+Rousseau Protocol will have a voting frontend to allow for users to determine if their eligible to vote with a specific organization, vote for values on-chain, and propose revisions, additions, or removal of values. 
