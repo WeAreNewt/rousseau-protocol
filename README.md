@@ -22,3 +22,7 @@ IRousseauRepository determines where the values will be stored -- whether on-cha
 
 ### Front End
 Rousseau Protocol will have a voting frontend to allow for users to determine if their eligible to vote with a specific organization, vote for values on-chain, and propose revisions, additions, or removal of values. 
+
+### License
+
+[Link to code license](LICENSE.md)
