@@ -54,9 +54,10 @@ export const ChangeModal: React.FC<AddModalProps> = ({
           <b className="flex flex-row font-medium text-base leading-6">
             propose change
           </b>
-          <textarea className="flex flex-row box-border border rounded-lg border-solid border-gray-1000 resize-none focus:outline-none text-gray-600 px-py mt-4 h-[200px] left-[23px] top-[186px] px-[10px] py-[10px]">
-            your proposal text here
-          </textarea>
+          <textarea
+            className="flex flex-row box-border border rounded-lg border-solid border-gray-1000 resize-none focus:outline-none text-gray-600 px-py mt-4 h-[200px] left-[23px] top-[186px] px-[10px] py-[10px]"
+            defaultValue={"your proposal text here"}
+          ></textarea>
           <button
             className=" flex flex-row bg-gray-600 text-white rounded-full w-56 h-10 justify-center items-center mt-2 ml-auto"
             type="button"
