@@ -5,6 +5,7 @@ const Header: React.FC = () => (
   <nav className="flex flex-row items-center justify-between grow-0 py-5 px-12 gap-5 w-full">
     <svg
       onClick={() => Router.push("/")}
+      className="cursor-pointer"
       width="202"
       height="19"
       viewBox="0 0 202 19"
