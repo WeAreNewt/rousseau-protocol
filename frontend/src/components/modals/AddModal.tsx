@@ -9,7 +9,35 @@ export const AddModal: React.FC<AddModalProps> = ({
   show,
   setShow,
 }: AddModalProps) => {
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(0);
+  const [proposal, setProposal] = useState('');
+
+  // const { isLoading: writeLoading, write } = useContractWrite({
+  //   mode: 'recklesslyUnprepared',
+  //   address: '',
+  //   abi: ,
+  //   functionName: '',
+  // });
+
+  const addValue = async () => {
+    console.log(proposal)
+    try {
+      // write?.({recklesslySetUnpreparedArgs: [proposal]})
+      let res = new Promise(function(resolve, reject) {
+        setTimeout(() => {
+          console.log('done')
+          setStatus(1)
+        }, 4000);
+      });
+      
+      res.then(
+        result => alert(result), 
+        error => alert(error) 
+      );
+    } catch {
+
+    }
+  };
 
   return (
     <div
@@ -33,10 +61,12 @@ export const AddModal: React.FC<AddModalProps> = ({
             </b>
             <textarea
               className="flex flex-row box-border border rounded-lg border-solid border-gray-1000 resize-none focus:outline-none text-gray-600 px-py mt-4 h-[300px] left-[23px] top-[70px] px-[10px] py-[10px]"
-              defaultValue={"your proposal text here"}
+              // defaultValue={"your proposal text here"}
+              placeholder="your proposal text here"
+              onChange={(e) => setProposal(e.target.value)}
             />
             <button
-              onClick={() => setStatus(1)}
+              onClick={addValue}
               className="flex flex-row bg-gray-600 text-white rounded-full w-56 h-10 justify-center items-center mt-2 ml-auto"
               type="button"
             >

@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useContractWrite } from "wagmi";
+
 type AddModalProps = {
   show: boolean;
   setShow: (show: boolean) => void;
@@ -7,6 +10,38 @@ export const ChangeModal: React.FC<AddModalProps> = ({
   show,
   setShow,
 }: AddModalProps) => {
+
+  const [proposal, setProposal] = useState('');
+  const [loading, setLoading] = useState('');
+
+  // const { isLoading: writeLoading, write } = useContractWrite({
+  //   mode: 'recklesslyUnprepared',
+  //   address: '',
+  //   abi: ,
+  //   functionName: '',
+  // });
+  
+  const proposeChange = async () => {
+    try {
+      // write?.({recklesslySetUnpreparedArgs: [proposal]})
+      setLoading('- transaction loading')
+      console.log(proposal)
+      let res = new Promise(function(resolve, reject) {
+        setTimeout(() => {
+          console.log('done')
+          setLoading('- transaction complete')
+        }, 4000);
+      });
+      
+      res.then(
+        result => alert(result), 
+        error => alert(error) 
+      );
+    } catch(error) {
+      console.log(error);
+  }
+  };
+
   return (
     <div
       onMouseDown={() => setShow(false)}
@@ -52,15 +87,18 @@ export const ChangeModal: React.FC<AddModalProps> = ({
         </div>
         <div className="flex flex-col w-full px-5">
           <b className="flex flex-row font-medium text-base leading-6">
-            propose change
+            propose change {loading} 
           </b>
           <textarea
             className="flex flex-row box-border border rounded-lg border-solid border-gray-1000 resize-none focus:outline-none text-gray-600 px-py mt-4 h-[200px] left-[23px] top-[186px] px-[10px] py-[10px]"
-            defaultValue={"your proposal text here"}
+            // defaultValue={"your proposal text here"}
+            placeholder="your proposal text here"
+            onChange={(e) => setProposal(e.target.value)}
           ></textarea>
           <button
             className=" flex flex-row bg-gray-600 text-white rounded-full w-56 h-10 justify-center items-center mt-2 ml-auto"
             type="button"
+            onClick={proposeChange}
           >
             propose change
           </button>
