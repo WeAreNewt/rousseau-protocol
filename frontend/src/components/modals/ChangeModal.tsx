@@ -1,0 +1,109 @@
+import { useState } from "react";
+import { useContractWrite } from "wagmi";
+
+type AddModalProps = {
+  show: boolean;
+  setShow: (show: boolean) => void;
+};
+
+export const ChangeModal: React.FC<AddModalProps> = ({
+  show,
+  setShow,
+}: AddModalProps) => {
+
+  const [proposal, setProposal] = useState('');
+  const [loading, setLoading] = useState('');
+
+  // const { isLoading: writeLoading, write } = useContractWrite({
+  //   mode: 'recklesslyUnprepared',
+  //   address: '',
+  //   abi: ,
+  //   functionName: '',
+  // });
+  
+  const proposeChange = async () => {
+    try {
+      // write?.({recklesslySetUnpreparedArgs: [proposal]})
+      setLoading('- transaction loading')
+      console.log(proposal)
+      let res = new Promise(function(resolve, reject) {
+        setTimeout(() => {
+          console.log('done')
+          setLoading('- transaction complete')
+        }, 4000);
+      });
+      
+      res.then(
+        result => alert(result), 
+        error => alert(error) 
+      );
+    } catch(error) {
+      console.log(error);
+  }
+  };
+
+  return (
+    <div
+      onMouseDown={() => setShow(false)}
+      className={`${
+        show ? "block" : "hidden"
+      } fixed h-screen w-screen z-20 flex items-center justify-center create-btn-gradient-transparent px-4 lg:px-0 top-0 left-0`}
+    >
+      <div
+        className="flex flex-col items-center w-[530px] h-[432px] rounded-[10px]"
+        onMouseDown={(e) => e.stopPropagation()}
+        style={{ boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)" }}
+      >
+        <button
+          className="flex flex-row justify-center items-center bg-gray-600 text-white rounded-full w-56 h-10 mt-4"
+          type="button"
+        >
+          propose removal
+        </button>
+        <div className="mt-5 mb-5">
+          <div className="flex flex-row items-center">
+            <svg
+              width="216"
+              height="1"
+              viewBox="0 0 216 1"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="flex flex-col mr-4"
+            >
+              <line y1="0.5" x2="215.142" y2="0.5" stroke="#838383" />
+            </svg>
+            or
+            <svg
+              width="216"
+              height="1"
+              viewBox="0 0 216 1"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="flex flex-col ml-4"
+            >
+              <line y1="0.5" x2="215.142" y2="0.5" stroke="#838383" />
+            </svg>
+          </div>
+        </div>
+        <div className="flex flex-col w-full px-5">
+          <b className="flex flex-row font-medium text-base leading-6">
+            propose change {loading} 
+          </b>
+          <textarea
+            className="flex flex-row box-border border rounded-lg border-solid border-gray-1000 resize-none focus:outline-none text-gray-600 px-py mt-4 h-[200px] left-[23px] top-[186px] px-[10px] py-[10px]"
+            // defaultValue={"your proposal text here"}
+            placeholder="your proposal text here"
+            onChange={(e) => setProposal(e.target.value)}
+          ></textarea>
+          <button
+            className=" flex flex-row bg-gray-600 text-white rounded-full w-56 h-10 justify-center items-center mt-2 ml-auto"
+            type="button"
+            onClick={proposeChange}
+          >
+            propose change
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
