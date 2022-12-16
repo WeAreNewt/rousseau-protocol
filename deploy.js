@@ -17,7 +17,7 @@ const {
   });
   
   // Replace with the path to your compiled contracts
-  const contractPath = "../contracts/src/core/modules"; //  path/to/compiled/contracts
+  const contractPath = "./contracts/src/core/modules"; //  path/to/compiled/contracts
   
   // Deploy the contracts to the Goerli testnet
   client.deployContract(contractPath).then(({ address }) => {
